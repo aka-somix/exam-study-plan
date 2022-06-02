@@ -1,5 +1,6 @@
+# SPRINTS 
 
-SPRINT 0 - INIT PROJECT
+## SPRINT 0 - INIT PROJECT
 
 - [x] Init client
   - [x] Init React
