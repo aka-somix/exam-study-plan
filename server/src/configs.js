@@ -1,9 +1,8 @@
 /**
  * Server Configurations File
  */
-Config = {
-  PORT: 3001
-}
-
+const Config = {
+  PORT: 3001,
+};
 
 module.exports = Config;
