@@ -5,7 +5,7 @@
 - [x] Init client
   - [x] Init React
   - [x] Install dependencies
-  - [ ] Init Tailwind
+  - [x] Init Tailwind
   - [x] Folder Structure
 - [ ] Init Server
   - [ ] Init Expressjs
