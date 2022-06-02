@@ -8,10 +8,10 @@
   - [x] Init Tailwind
   - [x] Folder Structure
 - [ ] Init Server
-  - [ ] Init Expressjs
-  - [ ] Install dependencies
-  - [ ] Add Helmet
-  - [ ] Init Typescript
+  - [x] Init Expressjs
+  - [x] Install dependencies
+  - [x] Add Helmet
+  - [x] Init EsLINT
 - [ ] Figma Prototype
 
 
