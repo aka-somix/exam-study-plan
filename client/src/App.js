@@ -10,7 +10,7 @@ function App() {
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <a
-          className="App-link"
+          className="text-3xl font-bold underline text-primary-100"
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
@@ -18,6 +18,7 @@ function App() {
           Learn React
         </a>
       </header>
+
     </div>
   );
 }
