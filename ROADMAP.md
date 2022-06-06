@@ -17,3 +17,9 @@
 
 - [x] Figma Basic Components Creation
 - [x] Structure the Frontend Router with mock pages
+
+## SPRINT 2 - HOME PAGE BASICS
+
+- [ ] API List all courses
+- [ ] Frontend Header
+- [ ] Frontend Home Courses List
