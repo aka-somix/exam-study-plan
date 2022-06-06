@@ -15,5 +15,5 @@
 
 ## SPRINT 1 - CORE STRUCTURES
 
-- [ ] Figma Basic Components Creation
-- [ ] Structure the Frontend Router with mock pages
+- [x] Figma Basic Components Creation
+- [x] Structure the Frontend Router with mock pages
