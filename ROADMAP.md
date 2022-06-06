@@ -21,5 +21,5 @@
 ## SPRINT 2 - HOME PAGE BASICS
 
 - [ ] API List all courses
-- [ ] Frontend Header
+- [x] Frontend Header
 - [ ] Frontend Home Courses List
