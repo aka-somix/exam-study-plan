@@ -7,11 +7,13 @@
   - [x] Install dependencies
   - [x] Init Tailwind
   - [x] Folder Structure
-- [ ] Init Server
+- [x] Init Server
   - [x] Init Expressjs
   - [x] Install dependencies
   - [x] Add Helmet
   - [x] Init EsLINT
-- [ ] Figma Prototype
 
+## SPRINT 1 - CORE STRUCTURES
 
+- [ ] Figma Basic Components Creation
+- [ ] Structure the Frontend Router with mock pages
