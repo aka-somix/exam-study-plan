@@ -8,6 +8,11 @@ const cors = require('cors');
 // locals
 const configs = require('./configs');
 const requestIdentifierMiddleware = require('./middleware/req-identifier');
+const { loggingMiddleware } = require('./middleware/logging');
+
+// routes
+const coursesRouter = require('./routes/courses');
+const sessionRouter = require('./routes/session');
 
 /*
  * Build Express Server and add Middlewares
@@ -21,25 +26,31 @@ app.use(helmet());
 // handle json payloads
 app.use(express.json());
 
-// TODO Add logging middleware
-
 // Add request identifier for logging purpose
 app.use(requestIdentifierMiddleware);
 
+// Add logging middleware
+app.use(loggingMiddleware);
+
 // CORS
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: `http://localhost:${configs.PORT}`,
 };
 app.use(cors(corsOptions)); // For DEV purpose only.
 
 /*
  * Define Routes
  */
-app.get('/', (req, res) => {
-  console.log(`req identifier ${req.id}`);
-  res.statusCode = 200;
-  res.send({ test: 'ok' });
+
+app.get('/health', (req, res) => {
+  res.json({ health: 'ok' });
 });
+
+// courses
+app.use('/api/courses/', coursesRouter);
+
+// session (login/logout)
+app.use('/api/session/', sessionRouter);
 
 /*
  * Deploy Server
