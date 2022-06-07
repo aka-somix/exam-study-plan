@@ -22,5 +22,5 @@
 
 - [x] API Courses Endpoints
 - [x] API Database Add Courses
-- [ ] API Add Business Logic
+- [x] API Add Business Logic
 - [x] Frontend Header
