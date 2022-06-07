@@ -1,0 +1,22 @@
+{
+  "courses": [
+    {
+      "code": "ABCD011",
+      "name": "Corso-1",
+      "credits": 10,
+      "max_attendees": null
+    },
+    {
+      "code": "ABCD012",
+      "name": "Corso-2",
+      "credits": 10,
+      "max_attendees": null
+    },
+    {
+      "code": "ABCD013",
+      "name": "Corso-3",
+      "credits": 10,
+      "max_attendees": null
+    }
+  ]
+}

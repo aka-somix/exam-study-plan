@@ -13,10 +13,10 @@ winston.addColors(colors);
 
 // Chose the aspect of your log customizing the log format.
 const format = winston.format.combine(
-  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
+  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
   winston.format.colorize({ all: true }),
   winston.format.printf(
-    (info) => `${info.timestamp} ${info.level}: ${info.message}`,
+    (info) => `[${info.timestamp}] ~ ${info.level}: ${info.message}`,
   ),
 );
 

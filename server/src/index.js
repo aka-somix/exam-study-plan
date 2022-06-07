@@ -1,3 +1,5 @@
+'use-strict';
+
 /*
  * IMPORTS
  */
@@ -12,6 +14,7 @@ const { loggingMiddleware } = require('./middleware/logging');
 
 // routes
 const coursesRouter = require('./routes/courses');
+const studyPlanRouter = require('./routes/studyPlan');
 const sessionRouter = require('./routes/session');
 
 /*
@@ -20,7 +23,7 @@ const sessionRouter = require('./routes/session');
 const app = express();
 const port = configs.PORT;
 
-// Helmet for generic security
+// Helmet for security
 app.use(helmet());
 
 // handle json payloads
@@ -48,6 +51,9 @@ app.get('/health', (req, res) => {
 
 // courses
 app.use('/api/courses/', coursesRouter);
+
+// study plan
+app.use('/api/study-plan/', studyPlanRouter);
 
 // session (login/logout)
 app.use('/api/session/', sessionRouter);
