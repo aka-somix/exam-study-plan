@@ -20,5 +20,7 @@
 
 ## SPRINT 2 - HEADER AND COURSES API
 
-- [ ] API Courses API
+- [x] API Courses Endpoints
+- [ ] API Database Add Courses
+- [ ] API Add Business Logic
 - [x] Frontend Header
