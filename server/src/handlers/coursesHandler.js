@@ -1,4 +1,18 @@
-const fakeCourses = require('../data/fakeCourses.json').courses;
+'use-strict';
+
+const sqlite3 = require('sqlite3');
+const { open } = require('sqlite');
+const path = require('path');
+
+// open the database
+let database;
+(async () => {
+  // open the database
+  database = await open({
+    filename: path.join(__dirname, '..', 'data', 'studyPlan.db'),
+    driver: sqlite3.Database,
+  });
+})();
 
 /*
  *  Handlers for courses methods
@@ -7,30 +21,53 @@ const fakeCourses = require('../data/fakeCourses.json').courses;
 /**
  * Retrieve all courses from database
  */
-const getAllCourses = async () => new Promise((resolve) => {
-  // TODO Implement REAL Method
-  resolve(fakeCourses);
-});
+const getAllCourses = async () => {
+  const rows = await database.all('SELECT * FROM courses;', []);
+  // Assemble courses
+  const courses = rows.map((item) => ({
+    code: item.code,
+    name: item.name,
+    credits: item.credits,
+    max_students: item.max_students,
+  }));
+
+  return courses;
+};
 
 /**
  * Retrieve the details for a specific course
  */
-const getCourseDetails = async (code) => new Promise((resolve, reject) => {
-  // TODO Implement REAL Method
-
-  if (code === '404') {
-    const error = Error('Could not find course 404');
-    error.cause = 'NotFound';
-    reject(error);
-  }
-
+const getCourseDetails = async (code) => {
   const details = {
-    preparatoryCourses: ['Course-X', 'Course-Y'],
-    incompatibleCourses: ['Course-Z'],
+    preparatoryCourses: [],
+    incompatibleCourses: [],
   };
 
-  resolve(details);
-});
+  // Retrieve incompatible courses
+  const incompatibleSQL = `
+    SELECT c.name
+    FROM courses c INNER JOIN incompatible i ON c.code = i.courseCodeWith
+    WHERE i.courseCode = ?;
+  `;
+  const incompatibleCoursesRows = await database.all(incompatibleSQL, [code]);
+
+  // Add incompatible courses to response payload
+  details.incompatibleCourses = incompatibleCoursesRows.map((item) => (item.name));
+
+  // Retrieve incompatible courses
+  const preparatorySQL = `
+    SELECT c.name
+    FROM courses c INNER JOIN preparatory p ON c.code = p.courseCode
+    WHERE p.courseCodeFor = ?;
+  `;
+  const preparatoryCoursesRows = await database.all(preparatorySQL, [code]);
+
+  // Add preparatory courses to response payload
+  details.preparatoryCourses = preparatoryCoursesRows.map((item) => (item.name));
+
+  // Return detail of course
+  return details;
+};
 
 module.exports = {
   getAllCourses,
