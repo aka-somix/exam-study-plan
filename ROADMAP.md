@@ -30,4 +30,5 @@
 - [x] Courses Entry
 - [x] Courses List
 - [x] Courses Entry with Details
-- [ ] API Integration 
+- [x] API Integration 
+- [ ] API Integration with Details
