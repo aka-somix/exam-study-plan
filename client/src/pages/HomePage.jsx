@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Title from '../components/basics/Title';
 import CourseEntry from '../components/CourseEntry';
 
-function HomePage({courses}) {
+function HomePage({courses, loading}) {
 
   return (
     <div>
@@ -14,12 +14,15 @@ function HomePage({courses}) {
        */}
       <Title value='All Courses'/>
       <div className='w-full h-3/4 flex flex-col justify-start align-middle'>
-        {
-          courses.map((course) => {
-            return (
-              <CourseEntry course={course}/>
-            )
-          })
+        { 
+          loading ? <div>LOADING...</div>
+          : (
+            courses.map((course) => {
+              return (
+                <CourseEntry key={course.code} course={course}/>
+              )
+            })
+          )
         }
       </div>
 

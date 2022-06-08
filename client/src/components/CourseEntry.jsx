@@ -29,16 +29,16 @@ function CourseEntry({className, course}) {
                       grid grid-cols-course gap-4'
       >
       
-        <div className='flex justify-start align-middle text-2xl text-paragraph-100'>
+        <div className='flex justify-start align-middle font-semibold text-lg text-paragraph-100'>
           <FaBook className='m-1 mx-4'/>
           <h3>{course.name}</h3>
         </div>
 
-        <div className='flex justify-start py-1 text-l text-paragraph-100'>
+        <div className='flex justify-start py-1 text-paragraph-100'>
           CFU: {course.credits}
         </div>
         
-        <div className='flex justify-start py-1 text-l text-paragraph-100'>
+        <div className='flex justify-start py-1 text-paragraph-100'>
           <BsPeopleFill className='m-1 mx-4'/>
           <h3>{course.students || 0}{course.maxStudents ? `/${course.maxStudents}` : ''}</h3>
         </div>

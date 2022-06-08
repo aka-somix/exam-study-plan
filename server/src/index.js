@@ -37,7 +37,8 @@ app.use(loggingMiddleware);
 
 // CORS
 const corsOptions = {
-  origin: `http://localhost:${configs.PORT}`,
+  origin: 'http://localhost:3000',
+  credentials: true,
 };
 app.use(cors(corsOptions)); // For DEV purpose only.
 
