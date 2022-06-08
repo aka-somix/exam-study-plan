@@ -24,3 +24,10 @@
 - [x] API Database Add Courses
 - [x] API Add Business Logic
 - [x] Frontend Header
+
+## SPRINT 3 - HOME PAGE NOT LOGGED IN FRONTEND
+
+- [ ] Courses Entry
+- [ ] Courses List
+- [ ] Courses Entry with Details
+- [ ] API Integration 
