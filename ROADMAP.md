@@ -27,7 +27,7 @@
 
 ## SPRINT 3 - HOME PAGE NOT LOGGED IN FRONTEND
 
-- [ ] Courses Entry
-- [ ] Courses List
-- [ ] Courses Entry with Details
+- [x] Courses Entry
+- [x] Courses List
+- [x] Courses Entry with Details
 - [ ] API Integration 

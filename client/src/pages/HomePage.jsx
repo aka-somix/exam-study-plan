@@ -1,12 +1,35 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 
-function HomePage() {
+import Title from '../components/basics/Title';
+import CourseEntry from '../components/CourseEntry';
+
+function HomePage({courses}) {
+
   return (
     <div>
-      <h1 className='font-sans text-3xl text-paragraph-200'> Home Page </h1>
+
+      {/* 
+       * //All COURSES 
+       */}
+      <Title value='All Courses'/>
+      <div className='w-full h-3/4 flex flex-col justify-start align-middle'>
+        {
+          courses.map((course) => {
+            return (
+              <CourseEntry course={course}/>
+            )
+          })
+        }
+      </div>
+
     </div>
 
   )
 }
 
-export default HomePage;
+HomePage.propTypes = {
+   courses: PropTypes.array.isRequired,
+}
+
+export default HomePage;  

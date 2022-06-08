@@ -22,11 +22,16 @@ module.exports = {
           100: "#8E8D8A"
         },
         accent: {
-          100: "#00d1b9"
+          100: "#00d1b9",
+          200: "#8E8D8A"
         },
 
       }
     },
+    gridTemplateColumns: {
+      // Course entry column template
+      'course': '4fr 1fr 1fr 1fr',
+    }
   },
   plugins: [],
 }
