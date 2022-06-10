@@ -1,4 +1,4 @@
-import {React, useState} from 'react'
+import {React, useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 
 
@@ -7,17 +7,38 @@ import { FaBook } from 'react-icons/fa';
 import { BsPeopleFill } from 'react-icons/bs';
 import CourseEntryDescription from './CourseEntryDescription';
 
+import studyPlanService from '../service/studyPlanService';
+
 
 function CourseEntry({className, course}) {
 
   // Details visible flag
   const [showDetails, setShowDetails] = useState(false); 
+  const [courseDetails, setCourseDetails] = useState({}); 
 
   
   // Handle Show Details Button
   const handleDetailsButton = () => {
     setShowDetails(!showDetails);
   }
+
+  // FETCH COURSE DETAILS
+  useEffect(()=>{
+      const fetchData = async () => {
+      try {
+        const courseDetailFromDB = await studyPlanService.getCourseDetails(course.code);
+        setCourseDetails(courseDetailFromDB);
+      }
+      catch (error) {
+        console.error(`Couldn't Retrieve Data from API due to: ${error} `);
+      }
+    };
+
+    if (showDetails) {
+      fetchData();
+    }
+  }, [showDetails])
+
 
   return (
     <div className={`${className}`}>
@@ -62,7 +83,7 @@ function CourseEntry({className, course}) {
       {
         showDetails ? 
         (
-          <CourseEntryDescription />
+          <CourseEntryDescription details={courseDetails} />
         ) 
         : null
       }

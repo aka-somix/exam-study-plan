@@ -1,24 +1,53 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 
-function CourseEntryDescription() {
+function CourseEntryDescription({details}) {
   
   return (
     <div className='lg:mx-6 md:mx-4 mx-2 mb-2 p-4
                     bg-background-200
-                    grid grid-rows-4 gap-8'
+                    grid grid-rows-2 gap-4'
     >
-      <div className='flex justify-start align-middle 
-                      font-semibold text-l text-paragraph-200'>
-        <h3>Incompatible Courses:</h3>
+      {/* 
+        *   CORSI INCOMPATIBILI
+        */}
+      <div className='flex flex-col justify-start font-semibold text-l text-paragraph-200'>
+        <h3> <u>Incompatible Courses:</u> </h3>
+        <div className='mt-2 flex flex-col justify-evenly'>
+            {
+              details.incompatibleCourses &&
+              details.incompatibleCourses.length > 0 ?
+                details.incompatibleCourses.map((courseName) => {
+                  return <p className='font-medium text-sm ml-3'> {courseName} </p>
+                })
+              :
+              <p className='font-medium text-sm ml-3'> None. </p>
+            }
+        </div>
       </div>
 
-      <div className='flex justify-start align-middle 
-                      font-semibold text-l text-paragraph-200'>
-        <h3>Preparatory Courses:</h3>
+      {/* 
+        *   CORSO PROPEDEUTICO
+        */}
+      <div className='flex flex-col justify-start font-semibold text-l text-paragraph-200'>
+        <h3> <u>Preparatory Course:</u> </h3>
+        <div className='mt-2 flex flex-col justify-evenly'>
+            {
+              details.preparatoryCourses ?
+              details.preparatoryCourses.map((courseName) => {
+                return <p className='font-medium text-sm ml-3'> {courseName} </p>
+              })
+              :
+              'None.'
+            }
+        </div>
       </div>
-
     </div>
   )
+}
+
+CourseEntryDescription.propTypes = {
+   details: PropTypes.object.isRequired,
 }
 
 export default CourseEntryDescription
