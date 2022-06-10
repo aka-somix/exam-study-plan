@@ -18,7 +18,7 @@ function CourseEntryDescription({details}) {
               details.incompatibleCourses &&
               details.incompatibleCourses.length > 0 ?
                 details.incompatibleCourses.map((courseName) => {
-                  return <p className='font-medium text-sm ml-3'> {courseName} </p>
+                  return <p className='font-medium text-sm ml-3' key={courseName}> {courseName} </p>
                 })
               :
               <p className='font-medium text-sm ml-3'> None. </p>
@@ -33,12 +33,7 @@ function CourseEntryDescription({details}) {
         <h3> <u>Preparatory Course:</u> </h3>
         <div className='mt-2 flex flex-col justify-evenly'>
             {
-              details.preparatoryCourses ?
-              details.preparatoryCourses.map((courseName) => {
-                return <p className='font-medium text-sm ml-3'> {courseName} </p>
-              })
-              :
-              <p className='font-medium text-sm ml-3'> None. </p>
+              <p className='font-medium text-sm ml-3'> { details.preparatoryCourse ? details.preparatoryCourse.name : 'None.'} </p>
             }
         </div>
       </div>

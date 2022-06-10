@@ -29,7 +29,7 @@ const getAllCourses = async () => {
 const getCourseDetails = async (code) => {
   const database = await localDB.connect();
   const details = {
-    preparatoryCourses: [],
+    preparatoryCourse: null,
     incompatibleCourses: [],
   };
 
@@ -47,13 +47,13 @@ const getCourseDetails = async (code) => {
   // Retrieve incompatible courses
   const preparatorySQL = `
     SELECT cp.name
-    FROM courses cp INNER JOIN courses cp ON cp.code = c.preparatoryCourseCode
+    FROM courses cp INNER JOIN courses c ON cp.code = c.preparatoryCourseCode
     WHERE c.code = ?;
   `;
   const preparatoryCoursesRows = await database.all(preparatorySQL, [code]);
 
   // Add preparatory courses to response payload
-  details.preparatoryCourses = preparatoryCoursesRows.map((item) => (item.name));
+  details.preparatoryCourse = preparatoryCoursesRows.length > 0 ? preparatoryCoursesRows[0] : null;
 
   // Return detail of course
   return details;

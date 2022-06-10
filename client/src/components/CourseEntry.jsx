@@ -27,6 +27,7 @@ function CourseEntry({className, course}) {
       const fetchData = async () => {
       try {
         const courseDetailFromDB = await studyPlanService.getCourseDetails(course.code);
+        console.log({courseDetailFromDB})
         setCourseDetails(courseDetailFromDB);
       }
       catch (error) {
