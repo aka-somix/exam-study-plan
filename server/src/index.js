@@ -13,8 +13,8 @@ const session = require('express-session');
 // locals
 const configs = require('./configs');
 const requestIdentifierMiddleware = require('./middleware/req-identifier');
-const { loggingMiddleware } = require('./middleware/logging');
-const userHandler = require('./handlers/userHandler');
+const { loggingMiddlewares } = require('./middleware/logging');
+const userService = require('./services/userService');
 
 // routes
 const coursesRouter = require('./routes/courses');
@@ -37,7 +37,7 @@ app.use(express.json());
 app.use(requestIdentifierMiddleware);
 
 // Add logging middleware
-app.use(loggingMiddleware);
+app.use(...loggingMiddlewares);
 
 // CORS
 const corsOptions = {
@@ -51,7 +51,7 @@ app.use(cors(corsOptions)); // For DEV purpose only.
 // by setting a function to verify username and password
 passport.use(new LocalStrategy(
   (username, password, done) => {
-    userHandler.getUser(username, password).then((user) => {
+    userService.getUser(username, password).then((user) => {
       if (!user) return done(null, false, { message: 'Incorrect username and/or password.' });
 
       return done(null, user);
@@ -67,7 +67,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  userHandler.getUserById(id)
+  userService.getUserById(id)
     .then((user) => {
       done(null, user); // this will be available in req.user
     }).catch((err) => {

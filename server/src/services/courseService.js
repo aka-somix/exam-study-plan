@@ -46,9 +46,9 @@ const getCourseDetails = async (code) => {
 
   // Retrieve incompatible courses
   const preparatorySQL = `
-    SELECT c.name
-    FROM courses c INNER JOIN preparatory p ON c.code = p.courseCode
-    WHERE p.courseCodeFor = ?;
+    SELECT cp.name
+    FROM courses cp INNER JOIN courses cp ON cp.code = c.preparatoryCourseCode
+    WHERE c.code = ?;
   `;
   const preparatoryCoursesRows = await database.all(preparatorySQL, [code]);
 

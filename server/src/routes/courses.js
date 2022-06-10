@@ -3,7 +3,7 @@
 const express = require('express');
 const { logger } = require('../middleware/logging');
 
-const coursesHandler = require('../handlers/coursesHandler');
+const courseService = require('../services/courseService');
 
 const router = express.Router();
 
@@ -12,11 +12,9 @@ const router = express.Router();
  * Gets the main information of all courses, but not the details
  */
 router.get('/', async (req, res) => {
-  logger.info(`HANDLING Request-${req.id}`);
-
   try {
     // Retrieve data from service
-    const courses = await coursesHandler.getAllCourses();
+    const courses = await courseService.getAllCourses();
     res.json(courses);
   } catch (error) {
     logger.error(`Request-${req.id} Failed due to: ${error}`);
@@ -33,11 +31,9 @@ router.get('/:code/details', async (req, res) => {
   // Retrieve code
   const { code } = req.params;
 
-  logger.info(`HANDLING Request-${req.id}, getting details for Course: ${code}`);
-
   try {
     // Retrieve data from service
-    const details = await coursesHandler.getCourseDetails(code);
+    const details = await courseService.getCourseDetails(code);
     res.json(details);
   } catch (error) {
     logger.error(`Request-${req.id} Failed due to: ${error.message}`);

@@ -36,9 +36,11 @@ const stream = {
   write: (message) => logger.info(message),
 };
 
-const loggingMiddleware = morgan(
-  ':method :url :status - :response-time ms',
-  { stream },
-);
+morgan.token('id', (req) => req.id);
 
-module.exports = { logger, loggingMiddleware };
+const loggingMiddlewares = [
+  morgan('[:id] :method :url RESPONDED :status - :response-time ms', { stream }),
+  morgan('[:id] :method :url STARTED', { stream, immediate: true }),
+];
+
+module.exports = { logger, loggingMiddlewares };
