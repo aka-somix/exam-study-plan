@@ -38,7 +38,7 @@ function CourseEntryDescription({details}) {
                 return <p className='font-medium text-sm ml-3'> {courseName} </p>
               })
               :
-              'None.'
+              <p className='font-medium text-sm ml-3'> None. </p>
             }
         </div>
       </div>

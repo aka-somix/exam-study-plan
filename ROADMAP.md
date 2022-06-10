@@ -32,3 +32,16 @@
 - [x] Courses Entry with Details
 - [x] API Integration 
 - [x] API Integration with Details
+
+## SPRINT 4 - FULL BACKEND API
+
+- [ ] FIX: Only one preparatory course
+- [ ] API: Authentication
+- [ ] API: Study Plan Methods
+- [ ] API: Study Plan Population methods
+
+## SPRINT 5 - Authentication Integration
+
+- [ ] Integrate Authentication with frontend
+- [ ] Integrate Create and Delete Study Plan
+- [ ] Integrate Adding and removing Courses 
