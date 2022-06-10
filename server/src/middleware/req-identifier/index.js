@@ -1,3 +1,5 @@
+'use-strict';
+
 /**
  * Insert Here the middleware to assign to each request an ID
  */
