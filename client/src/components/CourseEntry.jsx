@@ -37,7 +37,7 @@ function CourseEntry({className, course}) {
     if (showDetails) {
       fetchData();
     }
-  }, [showDetails])
+  }, [showDetails, course.code])
 
 
   return (
