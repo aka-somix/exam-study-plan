@@ -3,7 +3,7 @@
 const express = require('express');
 const { logger } = require('../middleware/logging');
 
-const { getAllCourses, getCourseDetails } = require('../handlers/coursesHandler');
+const coursesHandler = require('../handlers/coursesHandler');
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 
   try {
     // Retrieve data from service
-    const courses = await getAllCourses();
+    const courses = await coursesHandler.getAllCourses();
     res.json(courses);
   } catch (error) {
     logger.error(`Request-${req.id} Failed due to: ${error}`);
@@ -37,7 +37,7 @@ router.get('/:code/details', async (req, res) => {
 
   try {
     // Retrieve data from service
-    const details = await getCourseDetails(code);
+    const details = await coursesHandler.getCourseDetails(code);
     res.json(details);
   } catch (error) {
     logger.error(`Request-${req.id} Failed due to: ${error.message}`);

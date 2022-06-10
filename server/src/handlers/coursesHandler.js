@@ -1,18 +1,6 @@
 'use-strict';
 
-const sqlite3 = require('sqlite3');
-const { open } = require('sqlite');
-const path = require('path');
-
-// open the database
-let database;
-(async () => {
-  // open the database
-  database = await open({
-    filename: path.join(__dirname, '..', 'data', 'studyPlan.db'),
-    driver: sqlite3.Database,
-  });
-})();
+const localDB = require('../libs/sqliteLocalDB');
 
 /*
  *  Handlers for courses methods
@@ -22,6 +10,7 @@ let database;
  * Retrieve all courses from database
  */
 const getAllCourses = async () => {
+  const database = await localDB.connect();
   const rows = await database.all('SELECT * FROM courses;', []);
   // Assemble courses
   const courses = rows.map((item) => ({
@@ -38,6 +27,7 @@ const getAllCourses = async () => {
  * Retrieve the details for a specific course
  */
 const getCourseDetails = async (code) => {
+  const database = await localDB.connect();
   const details = {
     preparatoryCourses: [],
     incompatibleCourses: [],
