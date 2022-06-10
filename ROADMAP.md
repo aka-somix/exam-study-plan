@@ -36,7 +36,7 @@
 ## SPRINT 4 - FULL BACKEND API
 
 - [ ] FIX: Only one preparatory course
-- [ ] API: Authentication
+- [x] API: Authentication
 - [ ] API: Study Plan Methods
 - [ ] API: Study Plan Population methods
 
