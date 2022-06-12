@@ -47,4 +47,21 @@ router.get('/:code/details', async (req, res) => {
   }
 });
 
+/*
+ * GET /incompatibles
+ * Gets the incompatible courses given a list of courses
+ */
+router.post('/incompatibles', async (req, res) => {
+  try {
+    // Retrieve code
+    const { courses } = req.body;
+    // Retrieve data from service
+    const details = await courseService.getIncompatiblesByCourseList(courses);
+    res.json(details);
+  } catch (error) {
+    logger.error(`Request-${req.id} Failed due to: ${error.message}`);
+    res.send(error.message);
+  }
+});
+
 module.exports = router;

@@ -1,10 +1,10 @@
 'use-strict';
 
 const localDB = require('../libs/sqliteLocalDB');
-const { logger } = require('../middleware/logging');
+const courseService = require('./courseService');
 
-const MIN_CREDITS = { 'part-time': 20, 'full-time': 10 }; // 60
-const MAX_CREDITS = { 'part-time': 40, 'full-time': 20 }; // 80
+const MIN_CREDITS = { 'part-time': 20, 'full-time': 60 };
+const MAX_CREDITS = { 'part-time': 40, 'full-time': 80 };
 
 /*
  *  Handlers for courses methods
@@ -151,7 +151,14 @@ const saveStudyPlanByUser = async (username, courses) => {
   /*
    * Validate NEW courses
    */
-  // TODO ERROR 1 -> if any NEW course has incompatibilities with any other in the study plan
+  // ERROR 1 -> if any NEW course has incompatibilities with any other in the study plan
+  const incompatibleFails = (await courseService.getIncompatiblesByCourseList(courses))
+    // If a course in studyplan is in the incompatible courses list -> FAIL!
+    .filter((incompatibleCourseCode) => newCoursesCodes.includes(incompatibleCourseCode));
+
+  if (incompatibleFails.length > 0) {
+    throw new Error(`BadRequest: Cannot Add ${incompatibleFails.join(', ')}. They violate incompatibilities.`);
+  }
 
   //  ERROR 2 -> if any NEW course has an unmet preparatory course in the studyPlan
   preparatoryFails = addingCourses.filter(

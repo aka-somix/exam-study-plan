@@ -59,7 +59,28 @@ const getCourseDetails = async (code) => {
   return details;
 };
 
+/**
+ * TODO Description
+ */
+const getIncompatiblesByCourseList = async (courses) => {
+  const database = await localDB.connect();
+
+  const incompatibileCoursesPromises = courses.map((course) => database.all('SELECT courseCodeWith FROM incompatible WHERE courseCode = ?;', [course.code]));
+
+  const incompatibileCourseEntries = (await Promise.all(incompatibileCoursesPromises));
+
+  const incompatibileCourseCodes = [];
+
+  incompatibileCourseEntries.forEach((entry) => {
+    incompatibileCourseCodes.push(...entry.map((incompatible) => incompatible.courseCodeWith));
+  });
+
+  // Return detail of course
+  return incompatibileCourseCodes;
+};
+
 module.exports = {
   getAllCourses,
   getCourseDetails,
+  getIncompatiblesByCourseList,
 };
