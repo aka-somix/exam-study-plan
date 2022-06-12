@@ -13,7 +13,7 @@ const getUser = async (id) => {
   const row = await database.get('SELECT * FROM user WHERE username = ?', [id]);
   if (row === undefined) return ({ error: 'User not found.' });
   // else
-  const user = { id: row.id, username: row.email, name: row.name };
+  const user = { username: row.username, name: row.name };
   return user;
 };
 

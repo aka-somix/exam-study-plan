@@ -3,6 +3,8 @@
 const express = require('express');
 // Import middlewares
 const { logger } = require('../middleware/logging');
+const isLoggedIn = require('../middleware/logged-in');
+
 // Import handler
 const studyPlanService = require('../services/studyPlanService');
 
@@ -10,12 +12,12 @@ const studyPlanService = require('../services/studyPlanService');
 const router = express.Router();
 
 /**
- * GET /:username
+ * GET /study-plan/
  * Returns the study plan associated to the user
  */
-router.get('/:username', async (req, res) => {
+router.get('/', isLoggedIn, async (req, res) => {
   try {
-    const { username } = req.params;
+    const { username } = req.user;
 
     // Ask Service for StudyPlan
     const studyPlanFromDB = await studyPlanService.getStudyPlanByUser(username);
@@ -32,12 +34,12 @@ router.get('/:username', async (req, res) => {
 });
 
 /**
- * POST /:username
+ * POST /study-plan/
  * Creates an empty study plan
  */
-router.post('/:username', async (req, res) => {
+router.post('/', isLoggedIn, async (req, res) => {
   try {
-    const { username } = req.params;
+    const { username } = req.user;
 
     const { studentType } = req.body;
 
@@ -56,13 +58,12 @@ router.post('/:username', async (req, res) => {
 });
 
 /**
- * DELETE /:username
+ * DELETE /study-plan/
  * Deletes an existing study plan
  */
-router.delete('/:username', async (req, res) => {
+router.delete('/', isLoggedIn, async (req, res) => {
   try {
-    const { username } = req.params;
-
+    const { username } = req.user;
     // Ask Service to delete study plan
     const studyPlanFromDB = await studyPlanService.deletePlanByUser(username);
     res.status(200).json(studyPlanFromDB);
@@ -73,12 +74,12 @@ router.delete('/:username', async (req, res) => {
 });
 
 /**
- * PUT /:username
+ * PUT /study-plan/
  * Deletes an existing study plan
  */
 router.put('/:username', async (req, res) => {
   try {
-    const { username } = req.params;
+    const { username } = req.user;
     const { courses } = req.body;
 
     // Ask Service to update study plan

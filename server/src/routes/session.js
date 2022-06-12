@@ -2,55 +2,8 @@
 
 const express = require('express');
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const session = require('express-session');
-
-const userService = require('../services/userService');
 
 const router = express.Router();
-
-/*
- * SETUP
- */
-
-// set up the "username and password" login strategy
-// by setting a function to verify username and password
-passport.use(new LocalStrategy(
-  (username, password, done) => {
-    userService.getUserCredentials(username, password).then((user) => {
-      if (!user) return done(null, false, { message: 'Incorrect username and/or password.' });
-
-      return done(null, user);
-    });
-  },
-));
-
-/*
- * Serialize and de-serialize the user (user object <-> session)
- */
-passport.serializeUser((user, done) => {
-  done(null, user.username);
-});
-
-passport.deserializeUser((username, done) => {
-  userService.getUser(username)
-    .then((user) => {
-      done(null, user); // this will be available in req.user
-    }).catch((err) => {
-      done(err, null);
-    });
-});
-
-// Session Setup to use it has storage for Passport
-router.use(session({
-  secret: 'f6efe2eb-3eda-4bdc-aa8c-2ba9d2d6bbe5',
-  resave: false,
-  saveUninitialized: false,
-}));
-
-// Passport Authentication Middleware
-router.use(passport.initialize());
-router.use(passport.session());
 
 /*
  *  ROUTES
