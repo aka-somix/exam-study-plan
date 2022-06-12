@@ -7,17 +7,17 @@ const crypto = require('crypto');
 
 const localDB = require('../libs/sqliteLocalDB');
 
-const getUserById = async (id) => {
+const getUser = async (id) => {
   const database = await localDB.connect();
 
-  const row = await database.get('SELECT * FROM user WHERE id = ?', [id]);
+  const row = await database.get('SELECT * FROM user WHERE username = ?', [id]);
   if (row === undefined) return ({ error: 'User not found.' });
   // else
   const user = { id: row.id, username: row.email, name: row.name };
   return user;
 };
 
-const getUser = async (username, password) => {
+const getUserCredentials = async (username, password) => {
   const database = await localDB.connect();
 
   const row = await database.get('SELECT * FROM user WHERE username = ?', [username]);
@@ -33,4 +33,4 @@ const getUser = async (username, password) => {
   return user;
 };
 
-module.exports = { getUser, getUserById };
+module.exports = { getUserCredentials, getUser };

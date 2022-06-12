@@ -6,15 +6,11 @@
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const session = require('express-session');
 
 // locals
 const configs = require('./configs');
 const requestIdentifierMiddleware = require('./middleware/req-identifier');
 const { loggingMiddlewares } = require('./middleware/logging');
-const userService = require('./services/userService');
 
 // routes
 const coursesRouter = require('./routes/courses');
@@ -45,46 +41,6 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions)); // For DEV purpose only.
-
-/** * Set up Passport ** */
-// set up the "username and password" login strategy
-// by setting a function to verify username and password
-passport.use(new LocalStrategy(
-  (username, password, done) => {
-    userService.getUser(username, password).then((user) => {
-      if (!user) return done(null, false, { message: 'Incorrect username and/or password.' });
-
-      return done(null, user);
-    });
-  },
-));
-
-/*
- * Serialize and de-serialize the user (user object <-> session)
- */
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser((id, done) => {
-  userService.getUserById(id)
-    .then((user) => {
-      done(null, user); // this will be available in req.user
-    }).catch((err) => {
-      done(err, null);
-    });
-});
-
-// Session Setup to use it has storage for Passport
-app.use(session({
-  secret: 'f6efe2eb-3eda-4bdc-aa8c-2ba9d2d6bbe5',
-  resave: false,
-  saveUninitialized: false,
-}));
-
-// Passport Authentication Middleware
-app.use(passport.initialize());
-app.use(passport.session());
 
 /*
  * Define Routes

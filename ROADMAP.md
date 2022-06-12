@@ -38,7 +38,7 @@
 - [x] FIX: Only one preparatory course
 - [x] API: Authentication
 - [x] API: Study Plan Methods
-- [ ] API: Study Plan Population methods
+- [x] API: Study Plan Population methods
 
 ## SPRINT 5 - Authentication Integration
 
