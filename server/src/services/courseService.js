@@ -17,7 +17,8 @@ const getAllCourses = async () => {
     code: item.code,
     name: item.name,
     credits: item.credits,
-    max_students: item.max_students,
+    maxStudents: item.max_students,
+    students: item.students,
   }));
 
   return courses;

@@ -12,7 +12,7 @@ async function getAllCourses() {
 
   if (response.ok) {
     // return courses list
-    return coursesJson.map((course) => ({ ...course }));
+    return coursesJson;
 
   } else {
     throw coursesJson;

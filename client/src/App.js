@@ -77,7 +77,7 @@ function App() {
         setStudyPlanCourses(studyPlan.courses);
 
       } catch (err) {
-        console.warn(err)
+        console.warn(err);
       }
     };
     checkAuth();

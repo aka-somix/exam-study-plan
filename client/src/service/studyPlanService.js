@@ -13,7 +13,6 @@ async function getStudyPlan() {
 
   if (response.ok) {
     // return found study plan
-    console.log({ studyPlan })
     return studyPlan;
 
   } else {
