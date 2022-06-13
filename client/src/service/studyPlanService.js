@@ -1,42 +1,70 @@
-const BASE_URL = new URL('http://localhost:3001/api');
+const BASE_URL = new URL('http://localhost:3001/api/study-plan');
 
 /*
- * COURSES API 
+ * STUDY PLAN API 
  */
-async function getAllCourses() {
 
-  // call: GET /api/courses
-  const response = await fetch(`${BASE_URL}/courses/`, { method: 'GET' });
+async function getStudyPlan() {
 
-  const coursesJson = await response.json();
+  // call: GET /api/study-plan/
+  const response = await fetch(`${BASE_URL}/`, { method: 'GET', credentials: 'include' });
+
+  const studyPlan = await response.json();
 
   if (response.ok) {
-    // return courses list
-    return coursesJson.map((course) => ({ ...course }));
+    // return found study plan
+    console.log({ studyPlan })
+    return studyPlan;
 
   } else {
-    throw coursesJson;
+    console.error({ studyPlan })
+    throw new Error(studyPlan);
   }
 }
 
-async function getCourseDetails(courseID) {
+async function createStudyPlan(studentType) {
 
-  // call: GET /api/courses
-  const response = await fetch(`${BASE_URL}/courses/${courseID}/details`, { method: 'GET' });
+  // call: POST /api/study-plan/
+  const response = await fetch(`${BASE_URL}/`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ studentType }),
+  });
 
-  const courseDetailJson = await response.json();
-
-  console.log({ courseDetailJson });
+  const studyPlanCreated = await response.json();
 
   if (response.ok) {
-    // return courses list
-    return courseDetailJson;
+    // return newly created study plan
+    return studyPlanCreated;
 
   } else {
-    throw courseDetailJson;
+    console.error({ studyPlanCreated })
+    throw new Error(studyPlanCreated);
   }
 }
 
+async function deleteStudyPlan() {
 
-const studyPlanService = { getAllCourses, getCourseDetails };
+  // call: DELETE /api/study-plan/
+  const response = await fetch(`${BASE_URL}/`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+
+  const deletedResponse = await response.json();
+
+  if (response.ok) {
+    // return newly created study plan
+    return deletedResponse;
+
+  } else {
+    console.error({ deleted: deletedResponse })
+    throw new Error(deletedResponse);
+  }
+}
+
+const studyPlanService = { getStudyPlan, createStudyPlan, deleteStudyPlan };
 export default studyPlanService;

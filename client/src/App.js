@@ -8,6 +8,7 @@ import { useState, useEffect, React } from 'react';
 
 
 
+const courseService = require('./service/courseService').default;
 const studyPlanService = require('./service/studyPlanService').default;
 const userService = require('./service/userService').default;
 
@@ -15,6 +16,12 @@ function App() {
 
   // Courses State representation
   const [courses, setCourses] = useState([]);
+
+  // Student Type representation
+  const [studentType, setStudentType] = useState('');
+
+  // Study Plan Courses representation
+  const [studyPlanCourses, setStudyPlanCourses] = useState([]);
 
   // Errors
   const [fetchError, setFetchError] = useState(false);
@@ -55,16 +62,21 @@ function App() {
     setUser({});
   };
 
-  // Credentials found hook
+  // Logged In hook
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        // here you have the user info, if already logged in
+        // Retrieve the user 
         const user = await userService.getUserInfo();
         setUser(user);
         setIsLogged(true);
+
+        // If logged in -> Retrieve Study Plan as well
+        const studyPlan = await studyPlanService.getStudyPlan();
+        setStudentType(studyPlan.studentType);
+        setStudyPlanCourses(studyPlan.courses);
+
       } catch (err) {
-        // TODO SHOW ERROR TOAST
         console.warn(err)
       }
     };
@@ -75,7 +87,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const coursesFromDB = await studyPlanService.getAllCourses();
+        const coursesFromDB = await courseService.getAllCourses();
         setLoading(false);
         setCourses(coursesFromDB);
       }
@@ -96,7 +108,7 @@ function App() {
         <div className='lg:mx-56 md:mx-24 mx-4'>
           <Routes>
             <Route exact path='/'
-              element={<HomePage courses={courses} loading={loading} />}
+              element={<HomePage isLogged={isLogged} studyPlanCourses={studyPlanCourses} studentType={studentType} courses={courses} loading={loading} />}
             />
             <Route exact path='/login'
               element={<LoginPage isLogged={isLogged} login={login} loginError={loginError} loading={loginLoading} />}

@@ -1,8 +1,8 @@
-const BASE_URL = new URL('http://localhost:3001/api');
+const BASE_URL = new URL('http://localhost:3001/api/session');
 
 
 async function logIn(credentials) {
-  let response = await fetch(`${BASE_URL}/session`, {
+  let response = await fetch(`${BASE_URL}/`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -20,11 +20,11 @@ async function logIn(credentials) {
 }
 
 async function logOut() {
-  await fetch(`${BASE_URL}/session/current`, { method: 'DELETE', credentials: 'include' });
+  await fetch(`${BASE_URL}/current`, { method: 'DELETE', credentials: 'include' });
 }
 
 async function getUserInfo() {
-  const response = await fetch(`${BASE_URL}/session/current`, { credentials: 'include' });
+  const response = await fetch(`${BASE_URL}/current`, { credentials: 'include' });
   const userInfo = await response.json();
   if (response.ok) {
     return userInfo;
