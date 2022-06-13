@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Title from '../components/basics/Title';
 import CourseEntry from '../components/CourseEntry';
 
-function HomePage({courses, loading}) {
+function HomePage({courses, loading }) {
 
   return (
     <div>

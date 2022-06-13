@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import AppLogo from './basics/AppLogo'
 import Button from './basics/Button';
 
-function Header({isLogged, username}) {
+function Header({isLogged, user, logout}) {
 
   const navigate = useNavigate();
 
@@ -18,12 +18,19 @@ function Header({isLogged, username}) {
         {
           isLogged 
           ? (
-              <h4 className='text-primary-200 font-sans text-xl'> 
-                Benvenuto <u><b>{username}</b></u>
-              </h4>
+              <div className='flex justify-center items-center'>
+                <h4 className='text-accent-200 font-sans text-xl'> 
+                  Welcome <u><b>{user.name}</b></u>
+                </h4>
+                <Button 
+                  className='mx-10' 
+                  label='Logout' 
+                  onClick={() => logout()}
+                />
+              </div>
           ) 
           : (
-            <Button label='Login' onClick={() => navigate('/login')}/>
+            <Button label='Go to Login' onClick={() => navigate('/login')}/>
           ) 
           
         }
@@ -34,10 +41,11 @@ function Header({isLogged, username}) {
 
 Header.propTypes = {
    isLogged: PropTypes.bool.isRequired,
-   username: PropTypes.string,
+   logout: PropTypes.func.isRequired,
+   user: PropTypes.object,
 }
 
 Header.defaultProps = {
-  username: '' 
+  user: {}
 }
 export default Header

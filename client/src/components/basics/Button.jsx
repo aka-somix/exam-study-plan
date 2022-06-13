@@ -2,12 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types';
 
 
-function Button({label, onClick}) {
+function Button({label, onClick, className}) {
   return (
     <div 
       onClick={onClick}
-      className='group relative cursor-pointer overflow-hidden
-                text-paragraph-100  hover:text-primary-200 bg-transparent'
+      className={`${className} group relative cursor-pointer overflow-hidden
+                text-paragraph-100  hover:text-primary-200 bg-transparent
+                text-center`}
     >
       <div className='absolute top-0 left-0 w-full h-full
                     bg-primary-200 duration-300 z-0
