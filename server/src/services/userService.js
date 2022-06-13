@@ -23,7 +23,7 @@ const getUserCredentials = async (username, password) => {
   const row = await database.get('SELECT * FROM user WHERE username = ?', [username]);
 
   if (row === undefined) return ({ error: 'User not found.' });
-  const user = { id: row.id, username: row.username, name: row.name };
+  const user = { username: row.username, name: row.name };
   const { salt } = row;
 
   const hashedPassword = await promisifiedScrypt(password, salt, 32);

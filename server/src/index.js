@@ -55,7 +55,7 @@ app.use(cors(corsOptions)); // For DEV purpose only.
 passport.use(new LocalStrategy(
   (username, password, done) => {
     userService.getUserCredentials(username, password).then((user) => {
-      if (!user) return done(null, false, { message: 'Incorrect username and/or password.' });
+      if (user.error) return done(null, false, { message: 'Incorrect username and/or password.' });
 
       return done(null, user);
     });

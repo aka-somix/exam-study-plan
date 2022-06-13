@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 
 import Title from '../components/basics/Title';
 import LoginForm from '../components/LoginForm';
+import ErrorBanner from '../components/ErrorBanner';
 
 
-function LoginPage({isLogged, login}) {
+function LoginPage({isLogged, login, loginError, loading}) {
 
   const navigate = useNavigate();
 
@@ -23,13 +24,22 @@ function LoginPage({isLogged, login}) {
         className='mt-10 mx-32'
         value='Login with you Credentials'
       />
+
+      {
+        loginError.message && 
+        <ErrorBanner 
+          className='mx-32'
+          message={loginError.message}
+        />
+      }
+
       {/* 
         *   Login Form Card
         */}
       <LoginForm 
         className='mx-16 py-10 px-32'
         onLogin={login}
-        validCredentials={true} // TODO -> Gestisci Errore credenziali
+        loading={loading}
       />
     </div>
   )
@@ -38,6 +48,8 @@ function LoginPage({isLogged, login}) {
 LoginPage.propTypes = {
   isLogged: PropTypes.bool.isRequired,
   login: PropTypes.func.isRequired,
+  loginError: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
 }
 
 export default LoginPage

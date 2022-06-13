@@ -16,30 +16,35 @@ function App() {
   // Courses State representation
   const [courses, setCourses] = useState([]);
 
-  // Fetch Data Error
+  // Errors
   const [fetchError, setFetchError] = useState(false);
+  const [loginError, setLoginError] = useState({});
 
   // Credentials State
   const [user, setUser] = useState({});
   const [isLogged, setIsLogged] = useState(false);
 
-  // Initial Loading
+  // Loadings
   const [loading, setLoading] = useState(true);
-
+  const [loginLoading, setLoginLoading] = useState(false);
 
   /*
    *  -- API CONNECTION -- 
    */
 
-  const login = async (credentials) => {
-    await userService.logIn(credentials)
+  const login = (credentials) => {
+    setLoginError({});
+    setLoginLoading(true);
+    userService.logIn(credentials)
       .then(user => {
         setIsLogged(true);
         setUser(user);
+        setLoginLoading(false);
       })
       .catch(err => {
-        // TODO SHOW ERROR TOAST
-        console.error(err)
+        console.error({ err });
+        setLoginError({ message: err });
+        setLoginLoading(false);
       }
       );
   };
@@ -94,7 +99,7 @@ function App() {
               element={<HomePage courses={courses} loading={loading} />}
             />
             <Route exact path='/login'
-              element={<LoginPage isLogged={isLogged} login={login} />}
+              element={<LoginPage isLogged={isLogged} login={login} loginError={loginError} loading={loginLoading} />}
             />
             <Route path='*' element={<Navigate to="/" />} />
           </Routes>

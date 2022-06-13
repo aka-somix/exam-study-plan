@@ -8,7 +8,7 @@ import Title from '../components/basics/Title'
 import FormInput from '../components/basics/FormInput';
 
 
-function LoginForm({className, onLogin, validCredentials}) {
+function LoginForm({className, onLogin, loading}) {
   // STATE
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -41,8 +41,18 @@ function LoginForm({className, onLogin, validCredentials}) {
 
       {/* FOOTER */}
       <div className='flex lg:justify-end justify-center mt-6'>
-        <Button label='Go Back' onClick={() => navigate('/')} className='mx-4'/>
-        <Button label='Login' onClick={() => onLogin({username, password})} className='mx-4'/>
+        <Button 
+          className='mx-4'
+          label='Go Back'
+          disabled={loading}
+          onClick={() => navigate('/')} 
+        />
+        <Button 
+          className='mx-4'
+          label='Login'
+          disabled={loading}
+          onClick={() => onLogin({username, password})} 
+        />
       </div>
     </div>
   )
@@ -50,7 +60,7 @@ function LoginForm({className, onLogin, validCredentials}) {
 
 LoginForm.propTypes = {
   onLogin: PropTypes.func.isRequired,
-  validCredentials: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired,
 };
 
 
