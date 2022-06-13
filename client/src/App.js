@@ -72,9 +72,11 @@ function App() {
         setIsLogged(true);
 
         // If logged in -> Retrieve Study Plan as well
+        setLoading(true);
         const studyPlan = await studyPlanService.getStudyPlan();
         setStudentType(studyPlan.studentType);
         setStudyPlanCourses(studyPlan.courses);
+        setLoading(false);
 
       } catch (err) {
         console.warn(err);
@@ -100,7 +102,9 @@ function App() {
   }, []);
 
 
-
+  /*
+   *  -- JSX Composition -- 
+   */
   return (
     <div className="bg-background-100 min-h-screen min-w-max">
       <BrowserRouter>
