@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
 
 
-import Button from '../components/basics/Button' 
+import Button from '../components/basics/Button'
+import Title from '../components/basics/Title'
+import FormInput from '../components/basics/FormInput';
 
 
 function LoginForm({className, onLogin, validCredentials}) {
@@ -20,21 +22,27 @@ function LoginForm({className, onLogin, validCredentials}) {
   }
 
   const updatePassword = (e) => {
-    setPassword(e.target.value.trim())
+    setPassword(e.target.value)
   }
 
   return (
     <div className={`${className}`}>
       {/* BODY */}
-      <div className=' w-full bg-primary-100 flex flex-col'>
-        <input type='text' onChange={updateUsername}></input>
-        <input type='password' onChange={updatePassword}></input>
+      <div className=' w-full flex flex-col'>
+        <Title value="Username:"/>
+        <FormInput
+          type='text' onChange={updateUsername}
+        />
+        <Title value="Password:"/>
+        <FormInput
+          type='password' onChange={updatePassword}
+        />
       </div>
 
       {/* FOOTER */}
-      <div className='flex justify-between mt-6'>
-        <Button label='Go Back' onClick={() => navigate('/')}/>
-        <Button label='Login' onClick={() => onLogin({username, password})}/>
+      <div className='flex lg:justify-end justify-center mt-6'>
+        <Button label='Go Back' onClick={() => navigate('/')} className='mx-4'/>
+        <Button label='Login' onClick={() => onLogin({username, password})} className='mx-4'/>
       </div>
     </div>
   )

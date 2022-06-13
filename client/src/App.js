@@ -4,7 +4,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import Header from './components/Header';
 
-const { useState, useEffect } = require('react');
+import { useState, useEffect, React } from 'react';
 
 
 

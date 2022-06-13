@@ -27,7 +27,7 @@ function LoginPage({isLogged, login}) {
         *   Login Form Card
         */}
       <LoginForm 
-        className='m-auto p-32'
+        className='mx-16 py-10 px-32'
         onLogin={login}
         validCredentials={true} // TODO -> Gestisci Errore credenziali
       />
