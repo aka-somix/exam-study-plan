@@ -35,6 +35,7 @@ async function createStudyPlan(studentType) {
 
   const studyPlanCreated = await response.json();
 
+
   if (response.ok) {
     // return newly created study plan
     return studyPlanCreated;

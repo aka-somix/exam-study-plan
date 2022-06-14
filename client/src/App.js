@@ -62,6 +62,24 @@ function App() {
     setUser({});
   };
 
+  const createStudyPlan = async (studentType) => {
+    try {
+      const studyPlanCreated = await studyPlanService.createStudyPlan(studentType);
+
+      console.log({ studyPlanCreated });
+
+      setStudentType(studyPlanCreated.studentType);
+      setStudyPlanCourses(studyPlanCreated.courses);
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  /*
+   *  -- USE EFFECT HOOKS -- 
+   */
+
   // Logged In hook
   useEffect(() => {
     const checkAuth = async () => {
@@ -70,14 +88,6 @@ function App() {
         const user = await userService.getUserInfo();
         setUser(user);
         setIsLogged(true);
-
-        // If logged in -> Retrieve Study Plan as well
-        setLoading(true);
-        const studyPlan = await studyPlanService.getStudyPlan();
-        setStudentType(studyPlan.studentType);
-        setStudyPlanCourses(studyPlan.courses);
-        setLoading(false);
-
       } catch (err) {
         console.warn(err);
       }
@@ -101,6 +111,26 @@ function App() {
     fetchData();
   }, []);
 
+  // Get StudyPlan
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const studyPlan = await studyPlanService.getStudyPlan();
+        setStudentType(studyPlan.studentType);
+        setStudyPlanCourses(studyPlan.courses);
+        setLoading(false);
+      }
+      catch (error) {
+        setLoading(false);
+        console.error(`Couldn't Retrieve Data from API due to: ${error} `);
+      }
+    };
+    if (isLogged) {
+      fetchData();
+    }
+  }, [user, isLogged]);
+
 
   /*
    *  -- JSX Composition -- 
@@ -112,7 +142,14 @@ function App() {
         <div className='lg:mx-56 md:mx-24 mx-4'>
           <Routes>
             <Route exact path='/'
-              element={<HomePage isLogged={isLogged} studyPlanCourses={studyPlanCourses} studentType={studentType} courses={courses} loading={loading} />}
+              element={<HomePage
+                isLogged={isLogged}
+                studyPlanCourses={studyPlanCourses}
+                studentType={studentType}
+                courses={courses}
+                loading={loading}
+                createStudyPlan={createStudyPlan}
+              />}
             />
             <Route exact path='/login'
               element={<LoginPage isLogged={isLogged} login={login} loginError={loginError} loading={loginLoading} />}

@@ -43,5 +43,6 @@
 ## SPRINT 5 - Authentication Integration
 
 - [x] Integrate Authentication with frontend
+- [x] Integrate Get Study Plan
 - [ ] Integrate Create and Delete Study Plan
 - [ ] Integrate Adding and removing Courses 

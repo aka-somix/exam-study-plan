@@ -7,7 +7,7 @@ import { FaBook } from 'react-icons/fa';
 import { BsPeopleFill } from 'react-icons/bs';
 import CourseEntryDescription from './CourseEntryDescription';
 
-import studyPlanService from '../service/studyPlanService';
+import courseService from '../service/courseService';
 
 
 function CourseEntry({className, course}) {
@@ -26,7 +26,7 @@ function CourseEntry({className, course}) {
   useEffect(()=>{
       const fetchData = async () => {
       try {
-        const courseDetailFromDB = await studyPlanService.getCourseDetails(course.code);
+        const courseDetailFromDB = await courseService.getCourseDetails(course.code);
         console.log({courseDetailFromDB})
         setCourseDetails(courseDetailFromDB);
       }
