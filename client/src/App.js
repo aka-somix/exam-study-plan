@@ -62,11 +62,10 @@ function App() {
     setUser({});
   };
 
+
   const createStudyPlan = async (studentType) => {
     try {
       const studyPlanCreated = await studyPlanService.createStudyPlan(studentType);
-
-      console.log({ studyPlanCreated });
 
       setStudentType(studyPlanCreated.studentType);
       setStudyPlanCourses(studyPlanCreated.courses);
@@ -75,6 +74,39 @@ function App() {
       console.error(error);
     }
   }
+
+  const deleteStudyPlan = async () => {
+    try {
+      await studyPlanService.deleteStudyPlan();
+
+      setStudentType('');
+      setStudyPlanCourses([]);
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const addToStudyPlan = (course) => {
+    setStudyPlanCourses([...studyPlanCourses, course]);
+  }
+
+  const removeFromStudyPlan = (course) => {
+    setStudyPlanCourses(studyPlanCourses.filter((c) => c.code !== course.code));
+  }
+
+  const saveStudyPlan = async (courses) => {
+    try {
+      const res = await studyPlanService.updateStudyPlan(courses);
+
+      console.log({ res })
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
 
   /*
    *  -- USE EFFECT HOOKS -- 
@@ -149,6 +181,10 @@ function App() {
                 courses={courses}
                 loading={loading}
                 createStudyPlan={createStudyPlan}
+                deleteStudyPlan={deleteStudyPlan}
+                addToStudyPlan={addToStudyPlan}
+                removeFromStudyPlan={removeFromStudyPlan}
+                saveStudyPlan={saveStudyPlan}
               />}
             />
             <Route exact path='/login'

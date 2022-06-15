@@ -77,10 +77,12 @@ router.delete('/', isLoggedIn, async (req, res) => {
  * PUT /study-plan/
  * Deletes an existing study plan
  */
-router.put('/:username', async (req, res) => {
+router.put('/', isLoggedIn, async (req, res) => {
   try {
     const { username } = req.user;
     const { courses } = req.body;
+
+    console.log(req.body);
 
     // Ask Service to update study plan
     await studyPlanService.saveStudyPlanByUser(username, courses);

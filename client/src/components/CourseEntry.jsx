@@ -10,7 +10,7 @@ import CourseEntryDescription from './CourseEntryDescription';
 import courseService from '../service/courseService';
 
 
-function CourseEntry({className, course}) {
+function CourseEntry({className, course, editMode, disabled, add}) {
 
   // Details visible flag
   const [showDetails, setShowDetails] = useState(false); 
@@ -27,7 +27,6 @@ function CourseEntry({className, course}) {
       const fetchData = async () => {
       try {
         const courseDetailFromDB = await courseService.getCourseDetails(course.code);
-        console.log({courseDetailFromDB})
         setCourseDetails(courseDetailFromDB);
       }
       catch (error) {
@@ -46,9 +45,9 @@ function CourseEntry({className, course}) {
       {/* 
         *   Main Info Entry
         */}
-      <div className='h-16 lg:mx-6 md:mx-4 mx-2 mt-4 p-4
-                      bg-primary-100 shadow-inner
-                      grid grid-cols-course gap-4'
+      <div className={`h-16 lg:mx-6 md:mx-4 mx-2 mt-4 p-4
+                      ${editMode && disabled ? 'bg-disabled-100': 'bg-primary-100'} shadow-inner
+                      grid grid-cols-course gap-4`}
       >
       
         <div className='flex justify-start align-middle font-semibold text-lg text-paragraph-100'>
@@ -64,6 +63,17 @@ function CourseEntry({className, course}) {
           <BsPeopleFill className='m-1 mx-4'/>
           <h3>{course.students || 0}{course.maxStudents ? `/${course.maxStudents}` : ''}</h3>
         </div>
+
+        {
+          editMode && !disabled ? (
+          <button 
+            className='border-2 border-paragraph-100 text-paragraph-100'
+            onClick={() => add(course)}>
+            Add
+          </button>
+          )
+          : <div></div>
+        }
 
         <div className='flex justify-end align-top'>
 
@@ -95,6 +105,9 @@ function CourseEntry({className, course}) {
 
 CourseEntry.propTypes = {
    course: PropTypes.object.isRequired,
+   editMode: PropTypes.bool,
+   disabled: PropTypes.bool,
+   add: PropTypes.func,
 }
 
 

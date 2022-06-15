@@ -33,7 +33,8 @@ module.exports = {
     },
     gridTemplateColumns: {
       // Course entry column template
-      'course': '6fr 1fr 1fr 1fr',
+      'course': '6fr 1fr 1fr 1fr 1fr',
+      'STcourse': '6fr 1fr 1fr 1fr',
     }
   },
   plugins: [],

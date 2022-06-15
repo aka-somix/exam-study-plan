@@ -9,14 +9,13 @@ async function getStudyPlan() {
   // call: GET /api/study-plan/
   const response = await fetch(`${BASE_URL}/`, { method: 'GET', credentials: 'include' });
 
-  const studyPlan = await response.json();
 
+  const studyPlan = await response.json();
   if (response.ok) {
     // return found study plan
     return studyPlan;
 
   } else {
-    console.error({ studyPlan })
     throw new Error(studyPlan);
   }
 }
@@ -41,7 +40,6 @@ async function createStudyPlan(studentType) {
     return studyPlanCreated;
 
   } else {
-    console.error({ studyPlanCreated })
     throw new Error(studyPlanCreated);
   }
 }
@@ -54,17 +52,39 @@ async function deleteStudyPlan() {
     credentials: 'include',
   });
 
-  const deletedResponse = await response.json();
-
   if (response.ok) {
     // return newly created study plan
-    return deletedResponse;
+    return {};
 
   } else {
-    console.error({ deleted: deletedResponse })
-    throw new Error(deletedResponse);
+    throw new Error(response);
   }
 }
 
-const studyPlanService = { getStudyPlan, createStudyPlan, deleteStudyPlan };
+async function updateStudyPlan(courses) {
+
+  console.log({ courses })
+
+  // call: PUT api/study-plan/
+  const response = await fetch(`${BASE_URL}/`, {
+    method: 'PUT',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ courses }),
+  });
+
+  const updateResponse = await response.json();
+
+  if (response.ok) {
+    // return newly created study plan
+    return updateResponse;
+
+  } else {
+    throw new Error(updateResponse);
+  }
+}
+
+const studyPlanService = { getStudyPlan, createStudyPlan, deleteStudyPlan, updateStudyPlan };
 export default studyPlanService;

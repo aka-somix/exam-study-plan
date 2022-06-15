@@ -44,5 +44,9 @@
 
 - [x] Integrate Authentication with frontend
 - [x] Integrate Get Study Plan
-- [ ] Integrate Create and Delete Study Plan
-- [ ] Integrate Adding and removing Courses 
+- [x] Integrate Create Study Plan
+- [x] Integrate Delete Study Plan
+- [x] Integrate Adding and removing Courses 
+- [x] Integrate show incompatible courses 
+- [ ] Integrate show preparatory courses
+- [ ] Add Credits consideration at frontend
