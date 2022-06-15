@@ -22,7 +22,10 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
   const [coursesToDisplay, setCoursesToDisplay] = useState([]);
 
   // Courses that cannot be added to StudyPlan
-  const [incompatibles, setIncompatibles] = useState([]);
+  const [notAddable, setNotAddable] = useState([]);
+
+  // Courses that cannot be added to StudyPlan
+  const [notRemovable, setNotRemovable] = useState([]);
 
 
   // StudyPlan Creation Wrap method
@@ -51,13 +54,40 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
     }
   }, [editMode, courses, studyPlanCourses])
 
+  // Get all not removable courses
+  useEffect(() => {
+    if (editMode){
+      const notRemovableCoursesCodes = studyPlanCourses
+      .filter((course) => {
+        const spPrepCourseCodes = studyPlanCourses.map((c) =>c.preparatoryCourseCode);
+        return spPrepCourseCodes.includes(course.code);
+      })
+      .map((course) => course.code);
+
+      setNotRemovable(notRemovableCoursesCodes);
+    }
+  }, [editMode, studyPlanCourses])
+
   // Get all Courses incompatible with actual studyplan
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Retrieve incompatible courses
         const incompatiblesFromDB = await courseService.getIncompatiblesByCourseList(studyPlanCourses);
-        setIncompatibles(incompatiblesFromDB);
+
+        // Extract Courses that don't have the preparatory in Study Plan
+        const preparatoryMissing = courses
+        .filter((course) => {
+          const spCourseCodes = studyPlanCourses.map((c) =>c.code);
+
+          return course.preparatoryCourseCode && !spCourseCodes.includes(course.preparatoryCourseCode);
+        })
+        .map((course) => course.code);
+        
+        const final = [...incompatiblesFromDB, ...preparatoryMissing];
+        console.log({preparatoryMissing})
+        console.log({final})
+        setNotAddable(final);
       }
       catch (error) {
         console.error(`Couldn't Retrieve Data from API due to: ${error} `);
@@ -66,7 +96,7 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
     if (editMode) {
       fetchData();
     }
-  }, [editMode, studyPlanCourses]);
+  }, [editMode, studyPlanCourses, courses]);
 
   /*
    *  -- JSX Composition -- 
@@ -131,7 +161,13 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
             : (
               studyPlanCourses.map((course) => {
                 return (
-                  <StudyPlanCourseEntry key={course.code} course={course} remove={removeFromStudyPlan} editMode={editMode}/>
+                  <StudyPlanCourseEntry 
+                    key={course.code} 
+                    course={course} 
+                    remove={removeFromStudyPlan} 
+                    disabled={notRemovable.includes(course.code)}
+                    editMode={editMode}
+                  />
                 )
               })
             )
@@ -155,7 +191,7 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
                   key={course.code} 
                   course={course} 
                   editMode={editMode} 
-                  disabled={incompatibles.includes(course.code)}
+                  disabled={notAddable.includes(course.code)}
                   add={addToStudyPlan}
                 />
               )

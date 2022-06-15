@@ -12,7 +12,8 @@ function StudyPlanCourseEntry({className, course, editMode, disabled, remove}) {
         *   Main Info Entry
         */}
       <div className={`h-16 lg:mx-6 md:mx-4 mx-2 mt-4 p-4
-                      ${disabled ? 'bg-disabled-100': 'bg-paragraph-100'} shadow-inner
+                      ${disabled && editMode? 'border-4 border-accent-100' : ''}
+                      bg-paragraph-100 shadow-inner
                       grid grid-cols-STcourse gap-4`}
       >
       
@@ -26,13 +27,14 @@ function StudyPlanCourseEntry({className, course, editMode, disabled, remove}) {
         </div>
         
         {
-          editMode &&
-          <button 
-            className='border-2 border-paragraph-200 text-paragraph-200 font-semibold'
-            onClick={() => remove(course)}
-          >
-            Remove
-          </button>
+          editMode && !disabled ? (
+            <button 
+              className='border-2 border-paragraph-200 text-paragraph-200 font-semibold'
+              onClick={() => remove(course)}
+            >
+              Remove
+            </button>
+          ) : <div></div>
         }
       </div>
     </div>

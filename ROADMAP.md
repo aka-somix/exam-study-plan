@@ -48,5 +48,15 @@
 - [x] Integrate Delete Study Plan
 - [x] Integrate Adding and removing Courses 
 - [x] Integrate show incompatible courses 
-- [ ] Integrate show preparatory courses
+- [x] Integrate show preparatory courses
 - [ ] Add Credits consideration at frontend
+
+
+## SPRINT 6 - GET BETTER. Solve Errors
+
+- [ ] Cancel SHOULD reset study plan to previous version
+- [ ] User without courses login not updating if courses already presents
+- [ ] Error Toasts
+- [ ] Better home page graphics
+- [ ] Icons for add and remove courses
+- [ ] 

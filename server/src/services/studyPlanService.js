@@ -167,13 +167,6 @@ const saveStudyPlanByUser = async (username, courses) => {
     (c) => c.preparatoryCourseCode && !newCoursesCodes.includes(c.preparatoryCourseCode),
   );
 
-  console.log({
-    preps: addingCourses.map((c) => (
-      { code: c.code, prep: c.preparatoryCourseCode }
-    )),
-  });
-  console.log({ preparatoryFails });
-
   if (preparatoryFails.length > 0) {
     throw new Error(`BadRequest: Cannot Add ${preparatoryFails.join(', ')}. They need preparatory courses not enlisted`);
   }
