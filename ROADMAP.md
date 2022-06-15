@@ -50,7 +50,7 @@
 - [x] Integrate show incompatible courses 
 - [x] Integrate show preparatory courses
 - [ ] Add Credits consideration at frontend
-
+- [ ] Implement the max students limit
 
 ## SPRINT 6 - GET BETTER. Solve Errors
 

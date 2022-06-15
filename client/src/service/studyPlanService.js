@@ -62,9 +62,6 @@ async function deleteStudyPlan() {
 }
 
 async function updateStudyPlan(courses) {
-
-  console.log({ courses })
-
   // call: PUT api/study-plan/
   const response = await fetch(`${BASE_URL}/`, {
     method: 'PUT',

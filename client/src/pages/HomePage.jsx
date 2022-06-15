@@ -12,6 +12,9 @@ import CreateStudyPlanModal from '../components/CreateStudyPlanModal';
 function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, createStudyPlan, 
                    deleteStudyPlan, addToStudyPlan, removeFromStudyPlan, saveStudyPlan }) {
 
+  const MIN_CREDITS = { 'part-time': 20, 'full-time': 60 };
+  const MAX_CREDITS = { 'part-time': 40, 'full-time': 80 };
+  
   // Show Create modal flag
   const [showCreateModal, setShowCreateModal] = useState(false);
 
@@ -26,6 +29,9 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
 
   // Courses that cannot be added to StudyPlan
   const [notRemovable, setNotRemovable] = useState([]);
+  
+  // Current CFU amount in Study plan
+  const [currentCFU, setCurrentCFU] = useState([]);
 
 
   // StudyPlan Creation Wrap method
@@ -84,10 +90,7 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
         })
         .map((course) => course.code);
         
-        const final = [...incompatiblesFromDB, ...preparatoryMissing];
-        console.log({preparatoryMissing})
-        console.log({final})
-        setNotAddable(final);
+        setNotAddable([...incompatiblesFromDB, ...preparatoryMissing]);
       }
       catch (error) {
         console.error(`Couldn't Retrieve Data from API due to: ${error} `);
@@ -97,6 +100,10 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
       fetchData();
     }
   }, [editMode, studyPlanCourses, courses]);
+
+  useEffect(() => {
+    setCurrentCFU(studyPlanCourses.reduce((p,c) => p + c.credits, 0));
+  }, [studyPlanCourses])
 
   /*
    *  -- JSX Composition -- 
@@ -137,18 +144,10 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
         
           <Title value={`${studentType.toUpperCase()} Study Plan`}/>
           
-          {/* StudyPlan Management Buttons */}
+          {/* StudyPlan EDIT Button */}
           {
-            editMode ? (
-              <>
-                <Button className="mx-8 w-28" label='Delete Plan' onClick={() => localDeleteStudyPlan()}/>  
-                <Button className="mx-8 w-28" label='Cancel' onClick={() => {setEditMode(false)}}/>
-                <Button className="mx-8 w-28" label='Save' onClick={() => localSaveStudyPlan(studyPlanCourses)}/>  
-              </>
-              )
-            : (
-              <Button className="mx-8 w-28" label='Edit' onClick={() => {setEditMode(true)}}/>
-            )
+            !editMode && 
+            <Button className="mx-8 w-28" label='Edit' onClick={() => {setEditMode(true)}}/>
           }
         
         </div>
@@ -162,17 +161,44 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
               studyPlanCourses.map((course) => {
                 return (
                   <StudyPlanCourseEntry 
-                    key={course.code} 
-                    course={course} 
-                    remove={removeFromStudyPlan} 
-                    disabled={notRemovable.includes(course.code)}
+                  key={course.code} 
+                  course={course} 
+                  remove={removeFromStudyPlan} 
+                  disabled={notRemovable.includes(course.code)}
                     editMode={editMode}
-                  />
-                )
-              })
-            )
-          }
+                    />
+                    )
+                  })
+                  )
+                }
         </div>
+        {/* FOOTER (StudyPlan Management Buttons) */}
+        
+        {
+          editMode &&
+          <div className='grid grid-flow-col'>
+            <Button className="my-auto mx-8" label='Delete Plan' onClick={() => localDeleteStudyPlan()}/>  
+            <Button className="my-auto mx-8" label='Cancel' onClick={() => {setEditMode(false)}}/>
+            <Button 
+              className="my-auto mx-8" 
+              label='Save' 
+              disabled={currentCFU > MAX_CREDITS[studentType] || currentCFU < MIN_CREDITS[studentType]} 
+              onClick={() => localSaveStudyPlan(studyPlanCourses)}
+            />
+            
+            <div className='m-8 flex flex-col justify-evenly items-end'>
+              <h3 className="font-2xl text-accent-200">
+                Minimum CFU: <u>{MIN_CREDITS[studentType]}</u>
+              </h3>
+              <h3  className="font-2xl font-semibold text-primary-200">
+                Current CFU: <b><u>{currentCFU}</u></b>
+              </h3>
+              <h3 className="font-2xl text-accent-200">
+                Maximum CFU: <u>{MAX_CREDITS[studentType]}</u> 
+              </h3> 
+            </div>
+          </div>
+        }
         </>
 
       }

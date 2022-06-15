@@ -97,10 +97,7 @@ function App() {
 
   const saveStudyPlan = async (courses) => {
     try {
-      const res = await studyPlanService.updateStudyPlan(courses);
-
-      console.log({ res })
-
+      await studyPlanService.updateStudyPlan(courses);
     } catch (error) {
       console.error(error);
     }
