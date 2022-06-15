@@ -23,8 +23,10 @@ function App() {
   // Study Plan Courses representation
   const [studyPlanCourses, setStudyPlanCourses] = useState([]);
 
+  // Dirty flag
+  const [dirty, setDirty] = useState(true);
+
   // Errors
-  const [fetchError, setFetchError] = useState(false);
   const [loginError, setLoginError] = useState({});
 
   // Credentials State
@@ -81,7 +83,7 @@ function App() {
 
       setStudentType('');
       setStudyPlanCourses([]);
-
+      setDirty(true);
     } catch (error) {
       console.error(error);
     }
@@ -98,6 +100,7 @@ function App() {
   const saveStudyPlan = async (courses) => {
     try {
       await studyPlanService.updateStudyPlan(courses);
+      setDirty(true);
     } catch (error) {
       console.error(error);
     }
@@ -130,15 +133,15 @@ function App() {
       try {
         const coursesFromDB = await courseService.getAllCourses();
         setLoading(false);
+        setDirty(false);
         setCourses(coursesFromDB);
       }
       catch (error) {
         console.error(`Couldn't Retrieve Data from API due to: ${error} `);
-        setFetchError(true);
       }
     };
     fetchData();
-  }, []);
+  }, [dirty]);
 
   // Get StudyPlan
   useEffect(() => {
@@ -158,7 +161,7 @@ function App() {
     if (isLogged) {
       fetchData();
     }
-  }, [user, isLogged]);
+  }, [user, isLogged, dirty]);
 
 
   /*

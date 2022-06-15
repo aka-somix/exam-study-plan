@@ -14,7 +14,7 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
 
   const MIN_CREDITS = { 'part-time': 20, 'full-time': 60 };
   const MAX_CREDITS = { 'part-time': 40, 'full-time': 80 };
-  
+
   // Show Create modal flag
   const [showCreateModal, setShowCreateModal] = useState(false);
 
@@ -62,7 +62,7 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
     }
   }, [editMode, courses, studyPlanCourses])
 
-  // Get all not removable courses
+  // Get all Courses that could not be removed
   useEffect(() => {
     if (editMode){
       const notRemovableCoursesCodes = studyPlanCourses
@@ -76,14 +76,14 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
     }
   }, [editMode, studyPlanCourses])
 
-  // Get all Courses incompatible with actual studyplan
+  // Get all Courses that could not be added 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Retrieve incompatible courses
+        // 1 - Incompatible courses
         const incompatiblesFromDB = await courseService.getIncompatiblesByCourseList(studyPlanCourses);
 
-        // Extract Courses that don't have the preparatory in Study Plan
+        // 2 - Courses that don't have the preparatory in Study Plan
         const preparatoryMissing = courses
         .filter((course) => {
           const spCourseCodes = studyPlanCourses.map((c) =>c.code);
@@ -92,7 +92,13 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
         })
         .map((course) => course.code);
         
-        setNotAddable([...incompatiblesFromDB, ...preparatoryMissing]);
+        // 3 - Courses that reached the max students limit
+        const maxStudentsReached = courses
+        .filter((course) => course.students === course.maxStudents)
+        .map((course) => course.code);
+
+        // ASSEMBLE not addable
+        setNotAddable([...incompatiblesFromDB, ...preparatoryMissing, ...maxStudentsReached]);
       }
       catch (error) {
         console.error(`Couldn't Retrieve Data from API due to: ${error} `);
@@ -175,8 +181,8 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
                   )
                 }
         </div>
+
         {/* FOOTER (StudyPlan Management Buttons) */}
-        
         {
           editMode &&
           <div className='grid grid-flow-col'>

@@ -85,6 +85,9 @@ const createStudyPlanByUser = async (username, studentType) => {
 const deletePlanByUser = async (username) => {
   const database = await localDB.connect();
 
+  // Get actual courses
+  const oldCourses = (await getStudyPlanByUser(username)).courses;
+
   // Delete all study_plan entries
   const deleteQuery = `
   DELETE FROM study_plan
@@ -99,6 +102,10 @@ const deletePlanByUser = async (username) => {
     WHERE username = ?
   `;
   await database.run(updateUserQuery, [username]);
+
+  // Decrement students of all courses that used to be in study plan
+  const removeUpdatePromises = oldCourses.map((course) => courseService.updateCourseStudents(course, 'sub'));
+  await Promise.all(removeUpdatePromises);
 };
 
 /**
