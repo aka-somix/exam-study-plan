@@ -18,8 +18,7 @@ router.get('/', async (req, res) => {
     res.json(courses);
   } catch (error) {
     logger.error(`Request-${req.id} Failed due to: ${error}`);
-    res.statusCode = 500;
-    res.send(error);
+    res.status(500).json(error.message);
   }
 });
 
@@ -39,11 +38,10 @@ router.get('/:code/details', async (req, res) => {
     logger.error(`Request-${req.id} Failed due to: ${error.message}`);
     // Handle Error type
     if (error.cause === 'NotFound') {
-      res.statusCode = 404;
+      res.status(404).json(error.message);
     } else {
-      res.statusCode = 500;
+      res.status(500).json(error.message);
     }
-    res.send(error.message);
   }
 });
 
@@ -60,7 +58,7 @@ router.post('/incompatibles', async (req, res) => {
     res.json(details);
   } catch (error) {
     logger.error(`Request-${req.id} Failed due to: ${error.message}`);
-    res.send(error.message);
+    res.status(500).json(error.message);
   }
 });
 

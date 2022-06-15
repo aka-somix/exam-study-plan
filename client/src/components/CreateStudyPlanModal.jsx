@@ -14,7 +14,7 @@ function CreateStudyPlanModal({onCancel, create}) {
         <div className="relative flex p-10">
           <div 
             className="flex items-center p-6 m-10 bg-background-100 cursor-pointer shadow-lg"
-            onClick={() => create('full-time')}
+            onClick={() => create('part-time')}
           >            
             <h3>PART-TIME</h3>
           </div>

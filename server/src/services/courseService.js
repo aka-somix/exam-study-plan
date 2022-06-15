@@ -11,15 +11,7 @@ const localDB = require('../libs/sqliteLocalDB');
  */
 const getAllCourses = async () => {
   const database = await localDB.connect();
-  const rows = await database.all('SELECT * FROM courses;', []);
-  // Assemble courses
-  const courses = rows.map((item) => ({
-    code: item.code,
-    name: item.name,
-    credits: item.credits,
-    maxStudents: item.max_students,
-    students: item.students,
-  }));
+  const courses = await database.all('SELECT * FROM courses;', []);
 
   return courses;
 };

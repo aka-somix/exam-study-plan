@@ -17,7 +17,7 @@ const getStudyPlanByUser = async (username) => {
   const database = await localDB.connect();
 
   const getAllQuery = `
-    SELECT c.code, c.name, c.credits
+    SELECT c.code, c.name, c.credits, c.preparatoryCourseCode
     FROM Courses c INNER JOIN study_plan sp ON c.code = sp.courseCode
     WHERE username = ?;
   `;
@@ -166,6 +166,13 @@ const saveStudyPlanByUser = async (username, courses) => {
     // study plan we are trying to save -> FAIL!
     (c) => c.preparatoryCourseCode && !newCoursesCodes.includes(c.preparatoryCourseCode),
   );
+
+  console.log({
+    preps: addingCourses.map((c) => (
+      { code: c.code, prep: c.preparatoryCourseCode }
+    )),
+  });
+  console.log({ preparatoryFails });
 
   if (preparatoryFails.length > 0) {
     throw new Error(`BadRequest: Cannot Add ${preparatoryFails.join(', ')}. They need preparatory courses not enlisted`);

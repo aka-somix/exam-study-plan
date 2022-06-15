@@ -16,7 +16,7 @@ async function getStudyPlan() {
     return studyPlan;
 
   } else {
-    throw new Error(studyPlan);
+    throw studyPlan;
   }
 }
 
@@ -57,7 +57,7 @@ async function deleteStudyPlan() {
     return {};
 
   } else {
-    throw new Error(response);
+    throw response;
   }
 }
 
@@ -82,7 +82,7 @@ async function updateStudyPlan(courses) {
     return updateResponse;
 
   } else {
-    throw new Error(updateResponse);
+    throw updateResponse;
   }
 }
 

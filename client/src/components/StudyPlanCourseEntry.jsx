@@ -25,13 +25,15 @@ function StudyPlanCourseEntry({className, course, editMode, disabled, remove}) {
           CFU: {course.credits}
         </div>
         
-
-        <button 
-          className='border-2 border-paragraph-200 text-paragraph-200 font-semibold'
-          onClick={() => remove(course)}
-        >
-          Remove
-        </button>
+        {
+          editMode &&
+          <button 
+            className='border-2 border-paragraph-200 text-paragraph-200 font-semibold'
+            onClick={() => remove(course)}
+          >
+            Remove
+          </button>
+        }
       </div>
     </div>
   )
@@ -39,7 +41,7 @@ function StudyPlanCourseEntry({className, course, editMode, disabled, remove}) {
 
 StudyPlanCourseEntry.propTypes = {
    course: PropTypes.object.isRequired,
-   editMode: PropTypes.bool,
+   editMode: PropTypes.bool.isRequired,
    disabled: PropTypes.bool,
    remove: PropTypes.func,
 }

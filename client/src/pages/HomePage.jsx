@@ -131,7 +131,7 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
             : (
               studyPlanCourses.map((course) => {
                 return (
-                  <StudyPlanCourseEntry key={course.code} course={course} remove={removeFromStudyPlan}/>
+                  <StudyPlanCourseEntry key={course.code} course={course} remove={removeFromStudyPlan} editMode={editMode}/>
                 )
               })
             )
