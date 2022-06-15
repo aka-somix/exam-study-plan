@@ -10,6 +10,8 @@ async function getAllCourses() {
 
   const coursesJson = await response.json();
 
+  console.log({ courses: coursesJson.filter(c => c.maxStudents) });
+
   if (response.ok) {
     // return courses list
     return coursesJson;
@@ -25,8 +27,6 @@ async function getCourseDetails(courseID) {
   const response = await fetch(`${BASE_URL}/${courseID}/details`, { method: 'GET' });
 
   const courseDetailJson = await response.json();
-
-  console.log({ courseDetailJson });
 
   if (response.ok) {
     // return courses list

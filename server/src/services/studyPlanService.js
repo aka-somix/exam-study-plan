@@ -17,7 +17,7 @@ const getStudyPlanByUser = async (username) => {
   const database = await localDB.connect();
 
   const getAllQuery = `
-    SELECT c.code, c.name, c.credits, c.preparatoryCourseCode
+    SELECT c.code, c.name, c.credits, c.preparatoryCourseCode, c.students, c.max_students
     FROM Courses c INNER JOIN study_plan sp ON c.code = sp.courseCode
     WHERE username = ?;
   `;
@@ -29,6 +29,8 @@ const getStudyPlanByUser = async (username) => {
     code: item.code,
     name: item.name,
     credits: item.credits,
+    students: item.students,
+    maxStudents: item.max_students,
     preparatoryCourseCode: item.preparatoryCourseCode,
   }));
 
@@ -142,7 +144,7 @@ const saveStudyPlanByUser = async (username, courses) => {
     // If a course marked for deletion is preparatory for any of
     // the new courses that we are trying to save -> FAIL!
     (course) => deletingCourses.map((c) => c.code).includes(course.preparatoryCourseCode),
-  );
+  ).map((c) => c.name);
 
   if (preparatoryFails.length > 0) {
     throw new Error(`BadRequest: Cannot Delete ${preparatoryFails.join(', ')}. They are preparatory for other courses`);
@@ -154,7 +156,8 @@ const saveStudyPlanByUser = async (username, courses) => {
   // ERROR 1 -> if any NEW course has incompatibilities with any other in the study plan
   const incompatibleFails = (await courseService.getIncompatiblesByCourseList(courses))
     // If a course in studyplan is in the incompatible courses list -> FAIL!
-    .filter((incompatibleCourseCode) => newCoursesCodes.includes(incompatibleCourseCode));
+    .filter((incompatibleCourseCode) => newCoursesCodes.includes(incompatibleCourseCode))
+    .map((c) => c.name);
 
   if (incompatibleFails.length > 0) {
     throw new Error(`BadRequest: Cannot Add ${incompatibleFails.join(', ')}. They violate incompatibilities.`);
@@ -165,16 +168,27 @@ const saveStudyPlanByUser = async (username, courses) => {
     // If a course marked for addition requires a preparatory not in the
     // study plan we are trying to save -> FAIL!
     (c) => c.preparatoryCourseCode && !newCoursesCodes.includes(c.preparatoryCourseCode),
-  );
+  ).map((c) => c.name);
 
   if (preparatoryFails.length > 0) {
     throw new Error(`BadRequest: Cannot Add ${preparatoryFails.join(', ')}. They need preparatory courses not enlisted`);
   }
 
-  /*
-   * Insert new courses
-   */
   if (addingCourses.length > 0) {
+    /*
+     * Validate Max Students
+     */
+    const maxStudentsFails = addingCourses.filter(
+      (course) => course.maxStudents && course.students === course.maxStudents,
+    ).map((c) => c.name);
+
+    if (maxStudentsFails.length > 0) {
+      throw new Error(`BadRequest: Cannot Add ${maxStudentsFails.join(', ')}. They need preparatory courses not enlisted`);
+    }
+
+    /*
+     * Insert new courses
+     */
     const flatInsertValues = [];
     const insertPlaceholders = [];
 
@@ -217,6 +231,15 @@ const saveStudyPlanByUser = async (username, courses) => {
       throw new Error('Database Error. Study Plan not saved.');
     }
   }
+
+  /*
+   * Update Students Number
+   */
+
+  const addUpdatePromises = addingCourses.map((course) => courseService.updateCourseStudents(course, 'add'));
+  const removeUpdatePromises = deletingCourses.map((course) => courseService.updateCourseStudents(course, 'sub'));
+
+  await Promise.all([...addUpdatePromises, ...removeUpdatePromises]);
 };
 
 module.exports = {

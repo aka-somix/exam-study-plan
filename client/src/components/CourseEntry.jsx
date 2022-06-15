@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 
 import { MdOutlineExpandMore, MdOutlineExpandLess } from 'react-icons/md';
+import { RiAddCircleLine } from 'react-icons/ri';
+
 import { FaBook } from 'react-icons/fa';
 import { BsPeopleFill } from 'react-icons/bs';
 import CourseEntryDescription from './CourseEntryDescription';
@@ -67,9 +69,9 @@ function CourseEntry({className, course, editMode, disabled, add}) {
         {
           editMode && !disabled ? (
           <button 
-            className='border-2 border-paragraph-100 text-paragraph-100'
+            className='m-auto text-paragraph-100'
             onClick={() => add(course)}>
-            Add
+            <RiAddCircleLine className='text-2xl inline'/> Add
           </button>
           )
           : <div></div>

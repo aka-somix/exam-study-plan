@@ -34,17 +34,19 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
   const [currentCFU, setCurrentCFU] = useState([]);
 
 
-  // StudyPlan Creation Wrap method
-  const create = async (studentType) => {
+  // Wrapper create
+  const localCreateStudyPlan = async (studentType) => {
     setShowCreateModal(false);
     await createStudyPlan(studentType);
   }
 
+  // Wrapper save
   const localSaveStudyPlan = async (courses) => {
     await saveStudyPlan(courses);
     setEditMode(false);
   }
 
+  // Wrapper delete
   const localDeleteStudyPlan = async () => {
     await deleteStudyPlan();
     setEditMode(false);
@@ -101,6 +103,7 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
     }
   }, [editMode, studyPlanCourses, courses]);
 
+  // Refresh Total CFU Number
   useEffect(() => {
     setCurrentCFU(studyPlanCourses.reduce((p,c) => p + c.credits, 0));
   }, [studyPlanCourses])
@@ -117,7 +120,7 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
         showCreateModal &&
         <CreateStudyPlanModal 
           onCancel={() => {setShowCreateModal(false);}}
-          create={create}
+          create={localCreateStudyPlan}
         />
       }
 

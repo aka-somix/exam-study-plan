@@ -11,7 +11,17 @@ const localDB = require('../libs/sqliteLocalDB');
  */
 const getAllCourses = async () => {
   const database = await localDB.connect();
-  const courses = await database.all('SELECT * FROM courses;', []);
+  const rows = await database.all('SELECT * FROM courses;', []);
+
+  // Assemble courses
+  const courses = rows.map((item) => ({
+    code: item.code,
+    name: item.name,
+    credits: item.credits,
+    students: item.students,
+    maxStudents: item.max_students,
+    preparatoryCourseCode: item.preparatoryCourseCode,
+  }));
 
   return courses;
 };
@@ -72,8 +82,25 @@ const getIncompatiblesByCourseList = async (courses) => {
   return incompatibileCourseCodes;
 };
 
+const updateCourseStudents = async (course, mode) => {
+  // mode validation
+  if (!['add', 'sub'].includes(mode)) throw new Error('Design Error!');
+
+  const database = await localDB.connect();
+
+  const updateQuery = `
+    UPDATE courses
+    SET students = ?
+    WHERE code = ?
+  `;
+
+  const res = await database.run(updateQuery, [mode === 'add' ? course.students + 1 : course.students - 1, course.code]);
+  return res;
+};
+
 module.exports = {
   getAllCourses,
   getCourseDetails,
   getIncompatiblesByCourseList,
+  updateCourseStudents,
 };

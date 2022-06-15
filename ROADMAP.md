@@ -49,8 +49,8 @@
 - [x] Integrate Adding and removing Courses 
 - [x] Integrate show incompatible courses 
 - [x] Integrate show preparatory courses
-- [ ] Add Credits consideration at frontend
-- [ ] Implement the max students limit
+- [x] Add Credits consideration at frontend
+- [x] Implement the max students limit
 
 ## SPRINT 6 - GET BETTER. Solve Errors
 
@@ -58,5 +58,6 @@
 - [ ] User without courses login not updating if courses already presents
 - [ ] Error Toasts
 - [ ] Better home page graphics
-- [ ] Icons for add and remove courses
+- [x] Icons for add and remove courses
+- [ ] Add API validation
 - [ ] 

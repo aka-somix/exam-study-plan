@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 
 import { FaBook } from 'react-icons/fa';
+import { BsPeopleFill } from 'react-icons/bs';
+import {MdDelete} from 'react-icons/md';
 
 function StudyPlanCourseEntry({className, course, editMode, disabled, remove}) {
 
@@ -25,14 +27,19 @@ function StudyPlanCourseEntry({className, course, editMode, disabled, remove}) {
         <div className='flex justify-start py-1 text-paragraph-200'>
           CFU: {course.credits}
         </div>
+
+        <div className='flex justify-start py-1 text-paragraph-200'>
+          <BsPeopleFill className='m-1 mx-4'/>
+          <h3>{course.students || 0}{course.maxStudents ? `/${course.maxStudents}` : ''}</h3>
+        </div>
         
         {
           editMode && !disabled ? (
             <button 
-              className='border-2 border-paragraph-200 text-paragraph-200 font-semibold'
+              className='text-paragraph-200 font-semibold m-auto'
               onClick={() => remove(course)}
             >
-              Remove
+              <MdDelete className='text-2xl inline'/> Remove
             </button>
           ) : <div></div>
         }
