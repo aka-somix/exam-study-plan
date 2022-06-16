@@ -1,11 +1,10 @@
 # Exam #12345: "Exam Title"
-## Student: s123456 LASTNAME FIRSTNAME 
+## Student: s298877 CIRONE SALVATORE
 
 ## React Client Application Routes
 
-- Route `/`: page content and purpose
-- Route `/something/:param`: page content and purpose, param specification
-- ...
+- Route `/`: Home Page with all the courses and the study plan
+- Route `/login/`: Login page with its form
 
 ## API Server
 
@@ -22,15 +21,19 @@
 
 ## Database Tables
 
-- Table `users` - contains xx yy zz
-- Table `something` - contains ww qq ss
-- ...
+- Table `user` - contains: username, password, salt, name, studentType
+- Table `courses` - contains: code, name, credits, students, maxStudents, preparatoryCourseCode
+- Table `incompatible` - contains: courseCode, courseCodeWith
+- Table `studyPlan` - contains: courseCode, username
 
 ## Main React Components
 
-- `ListOfSomething` (in `List.js`): component purpose and main functionality
-- `GreatButton` (in `GreatButton.js`): component purpose and main functionality
-- ...
+- `Header`: The header of the whole app with the Login/Logout button
+- `CourseEntry`: Represents a single entry inside the courses list
+- `CourseEntryDescription`: Description panel paired with a CourseEntry
+- `LoginForm`: Contains the form for logging in a registered user
+- `ErrorBanner`: Manages errors that needs to be displayed to the user
+
 
 (only _main_ components, minor ones may be skipped)
 
@@ -40,5 +43,8 @@
 
 ## Users Credentials
 
-- username, password (plus any other requested info)
-- username, password (plus any other requested info)
+- testuser, password, NULL (no study plan) 
+- scirone , password, part-time
+- mrossi, test, full-time
+- jdoe, test, part-time
+- abianchi, test, part-time 
