@@ -1,7 +1,11 @@
+/* eslint-disable consistent-return */
+
 'use-strict';
 
 const express = require('express');
+const { validationResult } = require('express-validator');
 const { logger } = require('../middleware/logging');
+const { validateGetCourseDetails } = require('../validations/courseValidations');
 
 const courseService = require('../services/courseService');
 
@@ -26,7 +30,12 @@ router.get('/', async (req, res) => {
  * GET /:code/details
  * Gets the details (preparatory/incompatible courses)
  */
-router.get('/:code/details', async (req, res) => {
+router.get('/:code/details', validateGetCourseDetails, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
   // Retrieve code
   const { code } = req.params;
 
@@ -46,7 +55,7 @@ router.get('/:code/details', async (req, res) => {
 });
 
 /*
- * GET /incompatibles
+ * POST /incompatibles
  * Gets the incompatible courses given a list of courses
  */
 router.post('/incompatibles', async (req, res) => {

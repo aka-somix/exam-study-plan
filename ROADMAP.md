@@ -61,7 +61,7 @@
 - [ ] Error Toasts
 - [ ] Better home page graphics
 - [x] Icons for add and remove courses
-- [ ] Add API validation
+- [x] Add API validation
 - [x] Rendere agibile il server con comando "nodemon index.js"
 - [ ] SCRIVERE README
 - [ ] 

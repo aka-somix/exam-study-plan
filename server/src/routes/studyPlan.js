@@ -1,9 +1,13 @@
+/* eslint-disable consistent-return */
+
 'use-strict';
 
 const express = require('express');
 // Import middlewares
+const { validationResult } = require('express-validator'); // validation middleware
 const { logger } = require('../middleware/logging');
 const isLoggedIn = require('../middleware/logged-in');
+const { validatePostStudyPlan, validatePutStudyPlan } = require('../validations/studyPlanValidations');
 
 // Import handler
 const studyPlanService = require('../services/studyPlanService');
@@ -37,7 +41,12 @@ router.get('/', isLoggedIn, async (req, res) => {
  * POST /study-plan/
  * Creates an empty study plan
  */
-router.post('/', isLoggedIn, async (req, res) => {
+router.post('/', isLoggedIn, validatePostStudyPlan, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
   try {
     const { username } = req.user;
 
@@ -77,12 +86,15 @@ router.delete('/', isLoggedIn, async (req, res) => {
  * PUT /study-plan/
  * Deletes an existing study plan
  */
-router.put('/', isLoggedIn, async (req, res) => {
+router.put('/', isLoggedIn, validatePutStudyPlan, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
   try {
     const { username } = req.user;
     const { courses } = req.body;
-
-    console.log(req.body);
 
     // Ask Service to update study plan
     await studyPlanService.saveStudyPlanByUser(username, courses);
