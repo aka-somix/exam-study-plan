@@ -55,9 +55,12 @@
 ## SPRINT 6 - GET BETTER. Solve Errors
 
 - [x] Cancel SHOULD reset study plan to previous version
+- [ ] Visualizzazione lista IN ORDINE ALFABETICO!
+- [ ] Indicare la ragione per non poter aggiungere/rimuovere un corso
 - [ ] User without courses login not updating if courses already presents
 - [ ] Error Toasts
 - [ ] Better home page graphics
 - [x] Icons for add and remove courses
 - [ ] Add API validation
+- [ ] Rendere agibile il server con comando "nodemon index.js"
 - [ ] 

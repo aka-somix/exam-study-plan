@@ -11,15 +11,15 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 
 // locals
-const configs = require('./configs');
-const requestIdentifierMiddleware = require('./middleware/req-identifier');
-const { loggingMiddlewares } = require('./middleware/logging');
-const userService = require('./services/userService');
+const configs = require('./src/configs');
+const requestIdentifierMiddleware = require('./src/middleware/req-identifier');
+const { loggingMiddlewares } = require('./src/middleware/logging');
+const userService = require('./src/services/userService');
 
 // routes
-const coursesRouter = require('./routes/courses');
-const studyPlanRouter = require('./routes/studyPlan');
-const sessionRouter = require('./routes/session');
+const coursesRouter = require('./src/routes/courses');
+const studyPlanRouter = require('./src/routes/studyPlan');
+const sessionRouter = require('./src/routes/session');
 
 /*
  * Build Express Server and add Middlewares
