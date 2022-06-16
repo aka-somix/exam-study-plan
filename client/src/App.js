@@ -89,14 +89,6 @@ function App() {
     }
   }
 
-  const addToStudyPlan = (course) => {
-    setStudyPlanCourses([...studyPlanCourses, course]);
-  }
-
-  const removeFromStudyPlan = (course) => {
-    setStudyPlanCourses(studyPlanCourses.filter((c) => c.code !== course.code));
-  }
-
   const saveStudyPlan = async (courses) => {
     try {
       await studyPlanService.updateStudyPlan(courses);
@@ -182,8 +174,6 @@ function App() {
                 loading={loading}
                 createStudyPlan={createStudyPlan}
                 deleteStudyPlan={deleteStudyPlan}
-                addToStudyPlan={addToStudyPlan}
-                removeFromStudyPlan={removeFromStudyPlan}
                 saveStudyPlan={saveStudyPlan}
               />}
             />

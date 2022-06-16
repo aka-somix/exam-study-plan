@@ -10,7 +10,7 @@ import StudyPlanCourseEntry from '../components/StudyPlanCourseEntry';
 import CreateStudyPlanModal from '../components/CreateStudyPlanModal';
 
 function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, createStudyPlan, 
-                   deleteStudyPlan, addToStudyPlan, removeFromStudyPlan, saveStudyPlan }) {
+                   deleteStudyPlan, saveStudyPlan }) {
 
   const MIN_CREDITS = { 'part-time': 20, 'full-time': 60 };
   const MAX_CREDITS = { 'part-time': 40, 'full-time': 80 };
@@ -23,6 +23,9 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
 
   // Courses to be displayed if study plan is opened
   const [coursesToDisplay, setCoursesToDisplay] = useState([]);
+
+  // Local Variable Studyplan
+  const [localStudyPlan, setLocalStudyPlan] = useState([]);
 
   // Courses that cannot be added to StudyPlan
   const [notAddable, setNotAddable] = useState([]);
@@ -52,41 +55,55 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
     setEditMode(false);
   }
 
+  // LOCALLY add a new course to study plan
+  const addToStudyPlan = (course) => {
+    setLocalStudyPlan([...localStudyPlan, course]);
+  }
+  // LOCALLY remove a course from study plan
+  const removeFromStudyPlan = (course) => {
+    setLocalStudyPlan(localStudyPlan.filter((c) => c.code !== course.code));
+  }
+
+  // Update local study plan
+  useEffect(()=>{
+    setLocalStudyPlan(studyPlanCourses);
+  }, [editMode, studyPlanCourses]);
+
   // Get all displayable courses
   useEffect(() => {
     if (editMode){
-      setCoursesToDisplay(courses.filter((c) => !studyPlanCourses.map(sc => sc.code).includes(c.code)));
+      setCoursesToDisplay(courses.filter((c) => !localStudyPlan.map(sc => sc.code).includes(c.code)));
     }
     else {
       setCoursesToDisplay(courses);
     }
-  }, [editMode, courses, studyPlanCourses])
+  }, [editMode, courses, localStudyPlan])
 
   // Get all Courses that could not be removed
   useEffect(() => {
     if (editMode){
-      const notRemovableCoursesCodes = studyPlanCourses
+      const notRemovableCoursesCodes = localStudyPlan
       .filter((course) => {
-        const spPrepCourseCodes = studyPlanCourses.map((c) =>c.preparatoryCourseCode);
+        const spPrepCourseCodes = localStudyPlan.map((c) =>c.preparatoryCourseCode);
         return spPrepCourseCodes.includes(course.code);
       })
       .map((course) => course.code);
 
       setNotRemovable(notRemovableCoursesCodes);
     }
-  }, [editMode, studyPlanCourses])
+  }, [editMode, localStudyPlan])
 
   // Get all Courses that could not be added 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // 1 - Incompatible courses
-        const incompatiblesFromDB = await courseService.getIncompatiblesByCourseList(studyPlanCourses);
+        const incompatiblesFromDB = await courseService.getIncompatiblesByCourseList(localStudyPlan);
 
         // 2 - Courses that don't have the preparatory in Study Plan
         const preparatoryMissing = courses
         .filter((course) => {
-          const spCourseCodes = studyPlanCourses.map((c) =>c.code);
+          const spCourseCodes = localStudyPlan.map((c) =>c.code);
 
           return course.preparatoryCourseCode && !spCourseCodes.includes(course.preparatoryCourseCode);
         })
@@ -107,12 +124,12 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
     if (editMode) {
       fetchData();
     }
-  }, [editMode, studyPlanCourses, courses]);
+  }, [editMode, localStudyPlan, courses]);
 
   // Refresh Total CFU Number
   useEffect(() => {
-    setCurrentCFU(studyPlanCourses.reduce((p,c) => p + c.credits, 0));
-  }, [studyPlanCourses])
+    setCurrentCFU(localStudyPlan.reduce((p,c) => p + c.credits, 0));
+  }, [localStudyPlan])
 
   /*
    *  -- JSX Composition -- 
@@ -167,7 +184,7 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
           { 
             loading ? <div>LOADING...</div>
             : (
-              studyPlanCourses.map((course) => {
+              localStudyPlan.map((course) => {
                 return (
                   <StudyPlanCourseEntry 
                   key={course.code} 
@@ -192,7 +209,7 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
               className="my-auto mx-8" 
               label='Save' 
               disabled={currentCFU > MAX_CREDITS[studentType] || currentCFU < MIN_CREDITS[studentType]} 
-              onClick={() => localSaveStudyPlan(studyPlanCourses)}
+              onClick={() => localSaveStudyPlan(localStudyPlan)}
             />
             
             <div className='m-8 flex flex-col justify-evenly items-end'>

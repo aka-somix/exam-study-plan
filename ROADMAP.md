@@ -54,7 +54,7 @@
 
 ## SPRINT 6 - GET BETTER. Solve Errors
 
-- [ ] Cancel SHOULD reset study plan to previous version
+- [x] Cancel SHOULD reset study plan to previous version
 - [ ] User without courses login not updating if courses already presents
 - [ ] Error Toasts
 - [ ] Better home page graphics
