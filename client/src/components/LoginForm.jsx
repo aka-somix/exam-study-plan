@@ -10,8 +10,8 @@ import FormInput from '../components/basics/FormInput';
 
 function LoginForm({className, onLogin, loading}) {
   // STATE
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('testuser');
+  const [password, setPassword] = useState('password');
 
   // Navigate
   const navigate = useNavigate();
@@ -31,11 +31,15 @@ function LoginForm({className, onLogin, loading}) {
       <div className=' w-full flex flex-col'>
         <Title value="Username:"/>
         <FormInput
-          type='text' onChange={updateUsername}
+          type='text'
+          value={username}
+          onChange={updateUsername}
         />
         <Title value="Password:"/>
         <FormInput
-          type='password' onChange={updatePassword}
+          type='password'
+          value={password}
+          onChange={updatePassword}
         />
       </div>
 

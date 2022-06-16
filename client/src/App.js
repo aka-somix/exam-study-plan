@@ -153,7 +153,7 @@ function App() {
     if (isLogged) {
       fetchData();
     }
-  }, [user, isLogged, dirty]);
+  }, [isLogged, user.name, dirty]);
 
 
   /*

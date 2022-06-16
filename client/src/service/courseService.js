@@ -10,8 +10,6 @@ async function getAllCourses() {
 
   const coursesJson = await response.json();
 
-  console.log({ courses: coursesJson.filter(c => c.maxStudents) });
-
   if (response.ok) {
     // return courses list
     return coursesJson;

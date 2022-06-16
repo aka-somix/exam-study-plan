@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {FaUserShield, FaKey} from 'react-icons/fa';
 
 
-function FormInput({type, onChange, className}) {
+function FormInput({type, value, onChange, className}) {
   return (
     <div className= {`${className} px-4 py-2 bg-background-200 text-primary-100 flex`}>
       {
@@ -19,8 +19,10 @@ function FormInput({type, onChange, className}) {
       <input 
         className='px-6 text-xl bg-transparent text-paragraph-100 focus:outline-none w-full'
         type={type}
+        value={value}
         maxLength='32'
-        onChange={onChange}>
+        onChange={onChange}
+      >
       </input>
     </div>
   )
@@ -28,6 +30,7 @@ function FormInput({type, onChange, className}) {
 
 FormInput.propTypes = {
    type: PropTypes.string.isRequired,
+   value: PropTypes.string,
    onChange: PropTypes.func.isRequired,
 }
 

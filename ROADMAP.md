@@ -62,5 +62,6 @@
 - [ ] Better home page graphics
 - [x] Icons for add and remove courses
 - [ ] Add API validation
-- [ ] Rendere agibile il server con comando "nodemon index.js"
+- [x] Rendere agibile il server con comando "nodemon index.js"
+- [ ] SCRIVERE README
 - [ ] 
