@@ -55,7 +55,7 @@
 ## SPRINT 6 - GET BETTER. Solve Errors
 
 - [x] Cancel SHOULD reset study plan to previous version
-- [ ] Visualizzazione lista IN ORDINE ALFABETICO!
+- [x] Visualizzazione lista IN ORDINE ALFABETICO!
 - [ ] Indicare la ragione per non poter aggiungere/rimuovere un corso
 - [ ] User without courses login not updating if courses already presents
 - [ ] Error Toasts
