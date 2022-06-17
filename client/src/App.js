@@ -64,7 +64,6 @@ function App() {
     setUser({});
   };
 
-
   const createStudyPlan = async (studentType) => {
     try {
       const studyPlanCreated = await studyPlanService.createStudyPlan(studentType);
@@ -148,6 +147,10 @@ function App() {
       catch (error) {
         setLoading(false);
         console.error(`Couldn't Retrieve Data from API due to: ${error} `);
+
+        // Set studentType and courses to default
+        setStudentType('');
+        setStudyPlanCourses([]);
       }
     };
     if (isLogged) {
