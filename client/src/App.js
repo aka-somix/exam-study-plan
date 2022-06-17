@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import Header from './components/Header';
 
 import { useState, useEffect, React } from 'react';
+import ErrorBanner from './components/ErrorBanner';
 
 
 
@@ -27,6 +28,7 @@ function App() {
   const [dirty, setDirty] = useState(true);
 
   // Errors
+  const [fetchErrorMessage, setFetchErrorMessage] = useState('');
   const [loginError, setLoginError] = useState({});
 
   // Credentials State
@@ -129,6 +131,8 @@ function App() {
       }
       catch (error) {
         console.error(`Couldn't Retrieve Data from API due to: ${error} `);
+        setLoading(false);
+        setFetchErrorMessage('There was an error retrieving courses. Please wait and try reloading the page.');
       }
     };
     fetchData();
@@ -167,6 +171,10 @@ function App() {
       <BrowserRouter>
         <Header isLogged={isLogged} user={user} logout={logout} />
         <div className='lg:mx-56 md:mx-24 mx-4'>
+          {
+            fetchErrorMessage &&
+            <ErrorBanner message={fetchErrorMessage} />
+          }
           <Routes>
             <Route exact path='/'
               element={<HomePage
