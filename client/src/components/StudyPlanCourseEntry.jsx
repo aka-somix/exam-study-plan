@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 
 
-import { FaBook } from 'react-icons/fa';
+import { FaBook, FaLock } from 'react-icons/fa';
 import { BsPeopleFill } from 'react-icons/bs';
 import {MdDelete} from 'react-icons/md';
 
@@ -14,13 +14,14 @@ function StudyPlanCourseEntry({className, course, editMode, disabled, remove}) {
         *   Main Info Entry
         */}
       <div className={`h-16 lg:mx-6 md:mx-4 mx-2 mt-4 p-4 rounded-sm
-                      ${disabled && editMode? 'border-4 border-accent-100' : ''}
-                      bg-paragraph-100 shadow-inner
+                      ${disabled && editMode? 'border-4 border-accent-200' : ''}
+                      bg-background-200 shadow-inner
                       grid grid-cols-STcourse gap-4`}
       >
       
-        <div className='flex justify-start align-middle font-semibold text-lg text-accent-100'>
-          <FaBook className='m-1 mx-4'/>
+        <div className='grid grid-cols-title font-semibold text-lg text-paragraph-200'>
+          {disabled && editMode ? <FaLock className='m-1 mx-4'/> : <FaBook className='m-1 mx-4'/>}
+          <h3>{course.code}</h3>
           <h3>{course.name}</h3>
         </div>
 

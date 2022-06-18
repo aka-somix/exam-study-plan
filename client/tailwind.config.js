@@ -32,9 +32,15 @@ module.exports = {
       }
     },
     gridTemplateColumns: {
+
       // Course entry column template
       'course': '10fr 1fr 1fr 1fr 1fr',
+      // Course entry title template
+      'title': '0.5fr 1fr 5fr',
+
+      // Studyplan course entry template
       'STcourse': '10fr 1fr 1fr 2fr',
+
     }
   },
   plugins: [],

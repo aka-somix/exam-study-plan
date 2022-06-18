@@ -49,11 +49,12 @@ function CourseEntry({className, course, editMode, disabled, add}) {
         */}
       <div className={`h-16 lg:mx-6 md:mx-4 mx-2 mt-4 p-4 rounded-sm
                       ${editMode && disabled ? 'bg-disabled-100': 'bg-primary-100'} shadow-inner
-                      grid grid-cols-course gap-4`}
+                      grid grid-cols-course gap-0`}
       >
       
-        <div className='flex justify-start align-middle font-semibold text-lg text-paragraph-100'>
+        <div className='grid grid-cols-title font-semibold text-lg text-paragraph-100'>
           <FaBook className='m-1 mx-4'/>
+          <h3>{course.code}</h3>
           <h3>{course.name}</h3>
         </div>
 
