@@ -92,8 +92,10 @@ function App() {
 
   const saveStudyPlan = async (courses) => {
     try {
-      await studyPlanService.updateStudyPlan(courses);
-      setDirty(true);
+      if (studyPlanCourses !== courses) {
+        await studyPlanService.updateStudyPlan(courses);
+        setDirty(true);
+      }
     } catch (error) {
       console.error(error);
     }

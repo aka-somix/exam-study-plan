@@ -36,23 +36,44 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
   // Current CFU amount in Study plan
   const [currentCFU, setCurrentCFU] = useState([]);
 
+  // Action loading
+  const [actionLoading, setActionLoading] = useState(false);
+
 
   // Wrapper create
   const localCreateStudyPlan = async (studentType) => {
     setShowCreateModal(false);
-    await createStudyPlan(studentType);
+    setActionLoading(true);
+    try{
+      await createStudyPlan(studentType);
+    }
+    finally {
+      setActionLoading(false);
+    }
   }
 
   // Wrapper save
   const localSaveStudyPlan = async (courses) => {
-    await saveStudyPlan(courses);
-    setEditMode(false);
+    setActionLoading(true);
+    try{
+      await saveStudyPlan(courses);
+    }
+    finally {
+      setActionLoading(false);
+      setEditMode(false);
+    }
   }
 
   // Wrapper delete
   const localDeleteStudyPlan = async () => {
-    await deleteStudyPlan();
-    setEditMode(false);
+    setActionLoading(true);
+    try{
+      await deleteStudyPlan();
+    }
+    finally {
+      setActionLoading(false);
+      setEditMode(false);
+    }
   }
 
   // LOCALLY add a new course to study plan
@@ -156,6 +177,7 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
           className='float-right'
           label='Create Study Plan'
           onClick={() => {setShowCreateModal(true)}}
+          disabled={actionLoading}
         />
       }
 
@@ -192,12 +214,23 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
         {
           editMode &&
           <div className='grid grid-flow-col'>
-            <Button className="my-auto mx-8" label='Delete Plan' onClick={() => localDeleteStudyPlan()}/>  
-            <Button className="my-auto mx-8" label='Cancel' onClick={() => {setEditMode(false)}}/>
+            <Button 
+              className="my-auto mx-8" 
+              label='Delete Plan' 
+              onClick={() => localDeleteStudyPlan()}
+              disabled={actionLoading}
+            />  
+            <Button 
+              className="my-auto mx-8" 
+              label='Cancel' 
+              onClick={() => {setEditMode(false)}}
+              disabled={actionLoading}
+            />
+            
             <Button 
               className="my-auto mx-8" 
               label='Save' 
-              disabled={currentCFU > MAX_CREDITS[studentType] || currentCFU < MIN_CREDITS[studentType]} 
+              disabled={currentCFU > MAX_CREDITS[studentType] || currentCFU < MIN_CREDITS[studentType] || actionLoading} 
               onClick={() => localSaveStudyPlan(localStudyPlan)}
             />
             
