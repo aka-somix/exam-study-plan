@@ -43,8 +43,8 @@
 
 ## Users Credentials
 
-- testuser, password, NULL (no study plan) 
-- scirone , password, part-time
-- mrossi, test, full-time
-- jdoe, test, part-time
-- abianchi, test, part-time 
+- testuser, password, Francesca, NULL (no study plan) 
+- scirone , password, Salvatore, part-time
+- mrossi, test, Mario, full-time
+- jdoe, test, John, part-time
+- abianchi, test, Alessia, part-time 
