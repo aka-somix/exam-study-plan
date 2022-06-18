@@ -9,7 +9,7 @@ import { FaBook } from 'react-icons/fa';
 import { BsPeopleFill } from 'react-icons/bs';
 import CourseEntryDescription from './CourseEntryDescription';
 
-import courseService from '../service/courseService';
+import courseService from '../../service/courseService';
 
 
 function CourseEntry({className, course, editMode, disabled, add}) {

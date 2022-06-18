@@ -5,9 +5,9 @@ import courseService from '../service/courseService';
 
 import Title from '../components/basics/Title';
 import Button from '../components/basics/Button';
-import CourseEntry from '../components/CourseEntry';
 import CreateStudyPlanModal from '../components/CreateStudyPlanModal';
-import StudyPlanList from '../components/StudyPlanList';
+import StudyPlanList from '../components/StudyPlan/StudyPlanList';
+import CourseList from '../components/Courses/CourseList';
 
 function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, createStudyPlan, 
                    deleteStudyPlan, saveStudyPlan }) {
@@ -255,25 +255,13 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
         *   -- All COURSES 
         */}
       <Title value='All Courses'/>
-      <div className='w-full h-3/4 flex flex-col justify-start align-middle'>
-        { 
-          loading ? <div>LOADING...</div>
-          : (
-            coursesToDisplay.map((course) => {
-              return (
-                <CourseEntry 
-                  key={course.code} 
-                  course={course} 
-                  editMode={editMode} 
-                  disabled={notAddable.includes(course.code)}
-                  add={addToStudyPlan}
-                />
-              )
-            })
-          )
-        }
-      </div>
-
+      <CourseList 
+        loading={loading}
+        courses={coursesToDisplay}
+        editMode={editMode}
+        addAction={addToStudyPlan}
+        notAddable={notAddable}
+      />
     </div>
 
   )
