@@ -1,4 +1,4 @@
-# Exam #12345: "Exam Title"
+# Exam #1: "Piano degli studi"
 ## Student: s298877 CIRONE SALVATORE
 
 ## React Client Application Routes
@@ -29,6 +29,7 @@
 ## Main React Components
 
 - `Header`: The header of the whole app with the Login/Logout button
+- `CourseList`: Represents the courses list
 - `CourseEntry`: Represents a single entry inside the courses list
 - `CourseEntryDescription`: Description panel paired with a CourseEntry
 - `LoginForm`: Contains the form for logging in a registered user
