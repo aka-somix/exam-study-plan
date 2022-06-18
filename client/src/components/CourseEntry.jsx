@@ -47,7 +47,7 @@ function CourseEntry({className, course, editMode, disabled, add}) {
       {/* 
         *   Main Info Entry
         */}
-      <div className={`h-16 lg:mx-6 md:mx-4 mx-2 mt-4 p-4
+      <div className={`h-16 lg:mx-6 md:mx-4 mx-2 mt-4 p-4 rounded-sm
                       ${editMode && disabled ? 'bg-disabled-100': 'bg-primary-100'} shadow-inner
                       grid grid-cols-course gap-4`}
       >

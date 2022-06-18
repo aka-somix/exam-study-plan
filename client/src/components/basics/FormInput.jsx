@@ -7,7 +7,7 @@ import {FaUserShield, FaKey} from 'react-icons/fa';
 
 function FormInput({type, value, onChange, className}) {
   return (
-    <div className= {`${className} px-4 py-2 bg-background-200 text-primary-100 flex`}>
+    <div className= {`${className} px-4 py-2 bg-background-200 text-primary-100 flex rounded-sm`}>
       {
         type === 'password' ? (
           <FaKey className='text-2xl'/>

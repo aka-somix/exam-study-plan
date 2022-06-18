@@ -13,17 +13,25 @@ function CreateStudyPlanModal({onCancel, create}) {
         
         <div className="relative flex p-10">
           <div 
-            className="flex items-center p-6 m-10 bg-background-100 cursor-pointer shadow-lg"
+            className="flex flex-col rounded-sm justify-between items-center p-6 m-10 bg-background-100 cursor-pointer shadow-lg"
             onClick={() => create('part-time')}
           >            
-            <h3>PART-TIME</h3>
+            <img
+              className='w-32 m-2 mb-4'
+              src='./50.png' alt='50%' 
+            />
+            <h3 className='font-semibold text-2xl'>Part-Time</h3>
           </div>
           <div 
-            className="flex items-center p-6 m-10 bg-background-100 cursor-pointer shadow-lg"
-            onClick={() => create('full-time')}
-          >
-            <h3>FULL-TIME</h3>
-          </div>
+              className="flex flex-col rounded-sm justify-between items-center p-6 m-10 bg-background-100 cursor-pointer shadow-lg"
+              onClick={() => create('full-time')}
+            >            
+              <img
+                className='w-32 m-2 mb-4'
+                src='./100.png' alt='100%' 
+              />
+              <h3 className='font-semibold text-2xl'>Full-Time</h3>
+            </div>
         </div>
         
         <Button className='mx-10 my-6 shadow-lg' label='Cancel' onClick={onCancel}/>

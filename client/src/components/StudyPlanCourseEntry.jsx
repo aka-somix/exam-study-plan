@@ -13,7 +13,7 @@ function StudyPlanCourseEntry({className, course, editMode, disabled, remove}) {
       {/* 
         *   Main Info Entry
         */}
-      <div className={`h-16 lg:mx-6 md:mx-4 mx-2 mt-4 p-4
+      <div className={`h-16 lg:mx-6 md:mx-4 mx-2 mt-4 p-4 rounded-sm
                       ${disabled && editMode? 'border-4 border-accent-100' : ''}
                       bg-paragraph-100 shadow-inner
                       grid grid-cols-STcourse gap-4`}
