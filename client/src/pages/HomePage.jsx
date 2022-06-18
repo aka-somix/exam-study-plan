@@ -6,8 +6,8 @@ import courseService from '../service/courseService';
 import Title from '../components/basics/Title';
 import Button from '../components/basics/Button';
 import CourseEntry from '../components/CourseEntry';
-import StudyPlanCourseEntry from '../components/StudyPlanCourseEntry';
 import CreateStudyPlanModal from '../components/CreateStudyPlanModal';
+import StudyPlanList from '../components/StudyPlanList';
 
 function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, createStudyPlan, 
                    deleteStudyPlan, saveStudyPlan }) {
@@ -179,25 +179,14 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
         </div>
 
         {/* BODY (StudyPlan Courses) */}
-
-        <div className='w-full h-3/4 flex flex-col justify-start align-middle'>
-          { 
-            loading ? <div>LOADING...</div>
-            : (
-              localStudyPlan.map((course) => {
-                return (
-                  <StudyPlanCourseEntry 
-                  key={course.code} 
-                  course={course} 
-                  remove={removeFromStudyPlan} 
-                  disabled={notRemovable.includes(course.code)}
-                    editMode={editMode}
-                    />
-                    )
-                  })
-                  )
-                }
-        </div>
+        
+        <StudyPlanList
+          loading={loading}
+          editMode={editMode}
+          studyPlan={localStudyPlan}
+          removeAction={removeFromStudyPlan}
+          notRemovable={notRemovable}
+        />
 
         {/* FOOTER (StudyPlan Management Buttons) */}
         {
