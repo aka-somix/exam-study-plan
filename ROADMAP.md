@@ -58,9 +58,12 @@
 - [x] Visualizzazione lista IN ORDINE ALFABETICO!
 - [x] Indicare la ragione per non poter aggiungere/rimuovere un corso
 - [x] User without courses login not updating if courses already presents
-- [ ] Error Toasts in HomePage
 - [x] Icons for add and remove courses
 - [x] Add API validation
 - [x] Rendere agibile il server con comando "nodemon index.js"
-- [ ] SCRIVERE README
 - [x] Check compliance with exam requirements
+
+## SPRINT 7 - README
+
+- [ ] Error Toasts in HomePage
+- [ ] SCRIVERE README

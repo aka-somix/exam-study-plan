@@ -78,6 +78,12 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
     setLocalStudyPlan(localStudyPlan.filter((c) => c.code !== course.code));
   }
 
+
+  // Update editMode on logout
+  useEffect(() => {
+    if(!isLogged)setEditMode(false);
+  }, [isLogged])
+
   // Update local study plan
   useEffect(()=>{
     setLocalStudyPlan(studyPlanCourses);
