@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import StudyPlanCourseEntry from './StudyPlanCourseEntry'
 
-function StudyPlanList({studyPlan, loading, editMode, removeAction, notRemovable}) {
+function StudyPlanList({studyPlan, loading, editMode, removeAction}) {
   return (
     <div className='w-full h-3/4 flex flex-col justify-start align-middle'>
       { 
@@ -15,7 +15,7 @@ function StudyPlanList({studyPlan, loading, editMode, removeAction, notRemovable
                 key={course.code} 
                 course={course} 
                 remove={removeAction} 
-                disabled={notRemovable.includes(course.code)}
+                studyPlanCourses={studyPlan}
                 editMode={editMode}
               />
             )
@@ -30,7 +30,6 @@ StudyPlanList.propTypes = {
    studyPlan: PropTypes.array.isRequired,
    loading: PropTypes.bool.isRequired,
    editMode: PropTypes.bool.isRequired,
-   notRemovable: PropTypes.array.isRequired,
    removeAction: PropTypes.func.isRequired,
 }
 

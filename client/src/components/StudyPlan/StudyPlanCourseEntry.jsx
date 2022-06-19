@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types';
 
 
@@ -6,10 +6,56 @@ import { FaBook, FaLock } from 'react-icons/fa';
 import { BsPeopleFill } from 'react-icons/bs';
 import {MdDelete} from 'react-icons/md';
 
-function StudyPlanCourseEntry({className, course, editMode, disabled, remove}) {
+function StudyPlanCourseEntry({className, course, editMode, studyPlanCourses, remove}) {
+
+  // Disabled SP Course Management
+  const [disabled, setDisabled] = useState(false); 
+  const [disabledReason, setDisabledReason] = useState(''); 
+  const [disableMessageShown, setDisableMessageShown] = useState(false);
+
+  useEffect(() => {
+    if (editMode) {
+      // ERROR 1 -> Missing preparatory code in study plan
+      let errors = false;
+      let errorsMessage = '';
+
+      const preparatoryFails = studyPlanCourses
+        .filter((spCourse) => spCourse.preparatoryCourseCode === course.code)
+        .map((c) => c.name);
+
+      if (preparatoryFails.length > 0){
+        errors = true;
+        errorsMessage = `Preparatory for: ${preparatoryFails.join(', ')}`;
+      }
+    
+      setDisabled(errors);
+      setDisabledReason(errorsMessage);
+    }
+
+  }, [course.code, editMode, studyPlanCourses])
+  
 
   return (
-    <div className={`${className}`}>
+    <div 
+      className={`${className} relative`}
+      onMouseEnter={() => setDisableMessageShown(true)}
+      onMouseLeave={() => setDisableMessageShown(false)}
+    >
+      {/* 
+        *   DISABLED Reason on Hover
+        */
+      
+        editMode && disabled && disableMessageShown &&
+        <div className='absolute top-0 left-0 h-16 w-3/4 lg:mx-6 md:mx-4 mx-2 mt-4 p-4 rounded-sm
+                        border-4 border-accent-200 border-r-0
+                        bg-background-200 grid grid-cols-course gap-0'
+        >
+          <div className='flex items-center justify-start text-error-200'>
+            <FaLock className='py-1 mx-4 text-2xl'/> <u>{disabledReason}</u>
+          </div>
+        </div>
+      }
+
       {/* 
         *   Main Info Entry
         */}
@@ -52,7 +98,6 @@ function StudyPlanCourseEntry({className, course, editMode, disabled, remove}) {
 StudyPlanCourseEntry.propTypes = {
    course: PropTypes.object.isRequired,
    editMode: PropTypes.bool.isRequired,
-   disabled: PropTypes.bool,
    remove: PropTypes.func,
 }
 

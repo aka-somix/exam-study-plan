@@ -56,7 +56,7 @@
 
 - [x] Cancel SHOULD reset study plan to previous version
 - [x] Visualizzazione lista IN ORDINE ALFABETICO!
-- [ ] Indicare la ragione per non poter aggiungere/rimuovere un corso
+- [x] Indicare la ragione per non poter aggiungere/rimuovere un corso
 - [x] User without courses login not updating if courses already presents
 - [ ] Error Toasts in HomePage
 - [x] Icons for add and remove courses

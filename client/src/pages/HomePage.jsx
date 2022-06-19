@@ -7,11 +7,12 @@ import CreateStudyPlanModal from '../components/CreateStudyPlanModal';
 import StudyPlanList from '../components/StudyPlan/StudyPlanList';
 import CourseList from '../components/Courses/CourseList';
 
+
+const MIN_CREDITS = { 'part-time': 20, 'full-time': 60 };
+const MAX_CREDITS = { 'part-time': 40, 'full-time': 80 };
+
 function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, createStudyPlan, 
                    deleteStudyPlan, saveStudyPlan }) {
-
-  const MIN_CREDITS = { 'part-time': 20, 'full-time': 60 };
-  const MAX_CREDITS = { 'part-time': 40, 'full-time': 80 };
 
   // Show Create modal flag
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -24,9 +25,6 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
 
   // Local Variable Studyplan
   const [localStudyPlan, setLocalStudyPlan] = useState([]);
-
-  // Courses that cannot be added to StudyPlan
-  const [notRemovable, setNotRemovable] = useState([]);
   
   // Current CFU amount in Study plan
   const [currentCFU, setCurrentCFU] = useState([]);
@@ -95,20 +93,6 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
     }
   }, [editMode, courses, localStudyPlan])
 
-  // Get all Courses that could not be removed
-  useEffect(() => {
-    if (editMode){
-      const notRemovableCoursesCodes = localStudyPlan
-      .filter((course) => {
-        const spPrepCourseCodes = localStudyPlan.map((c) =>c.preparatoryCourseCode);
-        return spPrepCourseCodes.includes(course.code);
-      })
-      .map((course) => course.code);
-
-      setNotRemovable(notRemovableCoursesCodes);
-    }
-  }, [editMode, localStudyPlan])
-
   // Refresh Total CFU Number
   useEffect(() => {
     setCurrentCFU(localStudyPlan.reduce((p,c) => p + c.credits, 0));
@@ -169,7 +153,6 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
           editMode={editMode}
           studyPlan={localStudyPlan}
           removeAction={removeFromStudyPlan}
-          notRemovable={notRemovable}
         />
 
         {/* FOOTER (StudyPlan Management Buttons) */}

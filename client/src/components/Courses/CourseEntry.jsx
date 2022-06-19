@@ -19,6 +19,7 @@ function CourseEntry({className, course, studyPlanCourses, editMode, add}) {
   const [detailsLoaded, setDetailsLoaded] = useState(false); 
   const [courseDetails, setCourseDetails] = useState({}); 
   
+  // Disabled Course Management
   const [disabled, setDisabled] = useState(false); 
   const [disabledReason, setDisabledReason] = useState(''); 
   const [disableMessageShown, setDisableMessageShown] = useState(false);
@@ -109,7 +110,7 @@ function CourseEntry({className, course, studyPlanCourses, editMode, add}) {
         <div className='absolute top-0 left-0 h-16 w-3/4 lg:mx-6 md:mx-4 mx-2 mt-4 p-4 rounded-sm
                         bg-disabled-100 grid grid-cols-course gap-0'
         >
-          <div className='flex items-center justify-center text-paragraph-100'>
+          <div className='flex items-center justify-start text-paragraph-100'>
             <FaLock className='py-1 mx-4 text-2xl'/> {disabledReason}
           </div>
         </div>
@@ -180,8 +181,8 @@ function CourseEntry({className, course, studyPlanCourses, editMode, add}) {
 
 CourseEntry.propTypes = {
    course: PropTypes.object.isRequired,
+   studyPlanCourses: PropTypes.array.isRequired,
    editMode: PropTypes.bool,
-   disabled: PropTypes.bool,
    add: PropTypes.func,
 }
 
