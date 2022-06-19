@@ -88,12 +88,18 @@ function CourseEntry({className, course, studyPlanCourses, editMode, add}) {
         }
 
       }  
+
+      // ERROR 3 -> Max students Reached
+      if (course.maxStudents && course.students === course.maxStudents){
+        errors = true;
+        errorsMessage = 'Max students reached!'
+      }
       
       setDisabled(errors);
       setDisabledReason(errorsMessage);
     }
 
-  }, [course.code, editMode, detailsLoaded, courseDetails, studyPlanCourses])
+  }, [course, editMode, detailsLoaded, courseDetails, studyPlanCourses])
   
 
   return (
