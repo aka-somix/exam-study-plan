@@ -65,6 +65,6 @@
 
 ## SPRINT 7 - README
 
-- [ ] Disable max students exams
+- [x] Disable max students exams
 - [ ] Error Toasts in HomePage
 - [ ] SCRIVERE README

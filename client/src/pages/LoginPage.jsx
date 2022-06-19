@@ -29,7 +29,7 @@ function LoginPage({isLogged, login, loginError, loading}) {
         loginError.message && 
         <ErrorBanner 
           className='mx-32'
-          message={loginError.message}
+          message={loginError.message.toString()}
         />
       }
 

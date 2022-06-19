@@ -75,6 +75,7 @@ function App() {
 
     } catch (error) {
       console.error(error);
+      setFetchErrorMessage('There was an error creating study plan. Please wait and try reloading the page.');
     }
   }
 
@@ -87,6 +88,7 @@ function App() {
       setDirty(true);
     } catch (error) {
       console.error(error);
+      setFetchErrorMessage('There was an error deleting study plan. Please wait and try reloading the page.');
     }
   }
 
@@ -98,6 +100,7 @@ function App() {
       }
     } catch (error) {
       console.error(error);
+      setFetchErrorMessage('There was an error saving study plan. Please wait and try reloading the page.');
     }
   }
 
