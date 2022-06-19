@@ -17,8 +17,8 @@ function CourseEntryDescription({details}) {
             {
               details.incompatibleCourses &&
               details.incompatibleCourses.length > 0 ?
-                details.incompatibleCourses.map((courseName) => {
-                  return <p className='font-medium text-sm ml-3' key={courseName}> {courseName} </p>
+                details.incompatibleCourses.map((course) => {
+                  return <p className='font-medium text-sm ml-3' key={course.code}> {course.name} </p>
                 })
               :
               <p className='font-medium text-sm ml-3'> None. </p>

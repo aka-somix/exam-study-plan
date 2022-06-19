@@ -38,18 +38,18 @@ const getCourseDetails = async (code) => {
 
   // Retrieve incompatible courses
   const incompatibleSQL = `
-    SELECT c.name
+    SELECT c.code as code, c.name as name
     FROM courses c INNER JOIN incompatible i ON c.code = i.courseCodeWith
     WHERE i.courseCode = ?;
   `;
   const incompatibleCoursesRows = await database.all(incompatibleSQL, [code]);
 
   // Add incompatible courses to response payload
-  details.incompatibleCourses = incompatibleCoursesRows.map((item) => (item.name));
+  details.incompatibleCourses = incompatibleCoursesRows;
 
   // Retrieve incompatible courses
   const preparatorySQL = `
-    SELECT cp.name
+    SELECT cp.code as code, cp.name as name
     FROM courses cp INNER JOIN courses c ON cp.code = c.preparatoryCourseCode
     WHERE c.code = ?;
   `;
