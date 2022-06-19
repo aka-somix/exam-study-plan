@@ -1,8 +1,6 @@
 import {React, useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 
-import courseService from '../service/courseService';
-
 import Title from '../components/basics/Title';
 import Button from '../components/basics/Button';
 import CreateStudyPlanModal from '../components/CreateStudyPlanModal';
@@ -26,9 +24,6 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
 
   // Local Variable Studyplan
   const [localStudyPlan, setLocalStudyPlan] = useState([]);
-
-  // Courses that cannot be added to StudyPlan
-  const [notAddable, setNotAddable] = useState([]);
 
   // Courses that cannot be added to StudyPlan
   const [notRemovable, setNotRemovable] = useState([]);
@@ -113,39 +108,6 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
       setNotRemovable(notRemovableCoursesCodes);
     }
   }, [editMode, localStudyPlan])
-
-  // Get all Courses that could not be added 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // 1 - Incompatible courses
-        const incompatiblesFromDB = await courseService.getIncompatiblesByCourseList(localStudyPlan);
-
-        // 2 - Courses that don't have the preparatory in Study Plan
-        const preparatoryMissing = courses
-        .filter((course) => {
-          const spCourseCodes = localStudyPlan.map((c) =>c.code);
-
-          return course.preparatoryCourseCode && !spCourseCodes.includes(course.preparatoryCourseCode);
-        })
-        .map((course) => course.code);
-        
-        // 3 - Courses that reached the max students limit
-        const maxStudentsReached = courses
-        .filter((course) => course.students === course.maxStudents)
-        .map((course) => course.code);
-
-        // ASSEMBLE not addable
-        setNotAddable([...incompatiblesFromDB, ...preparatoryMissing, ...maxStudentsReached]);
-      }
-      catch (error) {
-        console.error(`Couldn't Retrieve Data from API due to: ${error} `);
-      }
-    };
-    if (editMode) {
-      fetchData();
-    }
-  }, [editMode, localStudyPlan, courses]);
 
   // Refresh Total CFU Number
   useEffect(() => {
@@ -260,7 +222,7 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
         courses={coursesToDisplay}
         editMode={editMode}
         addAction={addToStudyPlan}
-        notAddable={notAddable}
+        studyPlanCourses={localStudyPlan}
       />
     </div>
 
