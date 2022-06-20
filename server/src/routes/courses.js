@@ -27,6 +27,34 @@ router.get('/', async (req, res) => {
 });
 
 /*
+ * GET /:code
+ * Gets the course information
+ */
+router.get('/:code', validateGetCourseDetails, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  // Retrieve code
+  const { code } = req.params;
+
+  try {
+    // Retrieve data from service
+    const details = await courseService.getCourseByCode(code);
+    res.json(details);
+  } catch (error) {
+    logger.error(`Request-${req.id} Failed due to: ${error.message}`);
+    // Handle Error type
+    if (error.message.includes('NotFound')) {
+      res.status(404).json(error.message);
+    } else {
+      res.status(500).json(error.message);
+    }
+  }
+});
+
+/*
  * GET /:code/details
  * Gets the details (preparatory/incompatible courses)
  */
@@ -46,7 +74,7 @@ router.get('/:code/details', validateGetCourseDetails, async (req, res) => {
   } catch (error) {
     logger.error(`Request-${req.id} Failed due to: ${error.message}`);
     // Handle Error type
-    if (error.cause === 'NotFound') {
+    if (error.message.includes('NotFound')) {
       res.status(404).json(error.message);
     } else {
       res.status(500).json(error.message);

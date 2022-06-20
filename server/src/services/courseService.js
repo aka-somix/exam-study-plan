@@ -27,10 +27,26 @@ const getAllCourses = async () => {
 };
 
 /**
+ * Retrieve course information by code
+ */
+const getCourseByCode = async (code) => {
+  const database = await localDB.connect();
+  const rows = await database.all('SELECT * FROM courses WHERE code = ?;', [code]);
+
+  if (rows.length === 0) throw Error(`NotFound: No Course found with code ${code} `);
+  if (rows.length > 1) throw Error(`Internal Error: Multiple Courses found with code ${code}`);
+  return rows[0];
+};
+
+/**
  * Retrieve the details for a specific course
  */
 const getCourseDetails = async (code) => {
   const database = await localDB.connect();
+
+  // Validate course presence
+  await getCourseByCode(code);
+
   const details = {
     preparatoryCourse: null,
     incompatibleCourses: [],
@@ -63,7 +79,7 @@ const getCourseDetails = async (code) => {
 };
 
 /**
- * TODO Description
+ * Get all the incompatible courses with a given list
  */
 const getIncompatiblesByCourseList = async (courses) => {
   const database = await localDB.connect();
@@ -100,6 +116,7 @@ const updateCourseStudents = async (course, mode) => {
 
 module.exports = {
   getAllCourses,
+  getCourseByCode,
   getCourseDetails,
   getIncompatiblesByCourseList,
   updateCourseStudents,

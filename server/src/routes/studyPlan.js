@@ -84,7 +84,7 @@ router.delete('/', isLoggedIn, async (req, res) => {
 
 /**
  * PUT /study-plan/
- * Deletes an existing study plan
+ * Updates the studyplan with a new set of courses
  */
 router.put('/', isLoggedIn, validatePutStudyPlan, async (req, res) => {
   const errors = validationResult(req);

@@ -35,29 +35,6 @@ async function getCourseDetails(courseID) {
   }
 }
 
-async function getIncompatiblesByCourseList(courses) {
 
-  // call: POST /api/courses
-  const response = await fetch(`${BASE_URL}/incompatibles`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ courses }),
-  });
-
-  const incompatibles = await response.json();
-
-  if (response.ok) {
-    // return incompatible courses list
-    return incompatibles;
-
-  } else {
-    throw incompatibles;
-  }
-}
-
-
-
-const courseService = { getAllCourses, getCourseDetails, getIncompatiblesByCourseList };
+const courseService = { getAllCourses, getCourseDetails };
 export default courseService;

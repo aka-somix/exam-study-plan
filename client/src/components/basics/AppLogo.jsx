@@ -13,7 +13,7 @@ function AppLogo({className}) {
 
     <h1   className='relative p-4 h-full text-primary-200 font-sans text-4xl font-semibold 
                     hover:bg-primary-200 hover:text-paragraph-100 duration-300'>
-        Piano Studi App
+        My Study Plan 
       </h1>
     </div>
   )
