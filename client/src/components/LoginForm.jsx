@@ -11,6 +11,8 @@ import FormInput from '../components/basics/FormInput';
 function LoginForm({className, onLogin, loading}) {
   // STATE
   const [username, setUsername] = useState('testuser');
+  const [valid, setValid] = useState(true);
+
   const [password, setPassword] = useState('password');
 
   // Navigate
@@ -18,11 +20,25 @@ function LoginForm({className, onLogin, loading}) {
 
   // Form Handlers
   const updateUsername = (e) => {
-    setUsername(e.target.value.trim())
+    const value = e.target.value.trim();
+    setUsername(value);
   }
 
   const updatePassword = (e) => {
     setPassword(e.target.value)
+  }
+
+  const submitLogin = () => {
+    const validUsernameRegexp = /^([a-z]|[0-9]){4,20}$/g;
+
+    if(validUsernameRegexp.test(username)){
+      setValid(true);
+      onLogin({username, password});
+    }
+    else {
+      setValid(false);
+    }
+
   }
 
   return (
@@ -35,6 +51,13 @@ function LoginForm({className, onLogin, loading}) {
           value={username}
           onChange={updateUsername}
         />
+        {
+        !valid&&
+        <div className='text-error-200'>
+          Username cannot have spaces or special characters and must be between 4 and 20 characters
+        </div>
+        }
+
         <Title value="Password:"/>
         <FormInput
           type='password'
@@ -55,7 +78,7 @@ function LoginForm({className, onLogin, loading}) {
           className='mx-4'
           label='Login'
           disabled={loading}
-          onClick={() => onLogin({username, password})} 
+          onClick={submitLogin}
         />
       </div>
     </div>

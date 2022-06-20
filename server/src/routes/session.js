@@ -1,7 +1,11 @@
+/* eslint-disable consistent-return */
+
 'use-strict';
 
 const express = require('express');
 const passport = require('passport');
+const { validationResult } = require('express-validator');
+const { validateUsername } = require('../validations/sessionValidations');
 
 const router = express.Router();
 
@@ -11,8 +15,12 @@ const router = express.Router();
 
 // POST /sessions
 // login
-router.post('/', (req, res, next) => {
-  // eslint-disable-next-line consistent-return
+router.post('/', validateUsername, (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
   passport.authenticate('local', (err, user, info) => {
     if (err) return next(err);
     if (!user) {

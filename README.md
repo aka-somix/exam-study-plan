@@ -8,6 +8,15 @@
 
 ## API Server
 
+#### Overall Folder Structure.
+The API has been structured differently, so it will be briefly described here.
+
+`./src/routes`: Contains the routes of every different section of the api (i.e. course, session, study-plan)  
+`./src/services`: Here will be found the services the operates with the Database and builds responses objects  
+`./src/validations`: This folder holds the express-validator expressions for every section, to keep a clean interface in the routes file.  
+`./src/middleware`: Groups all the CUSTOM middlewares to be used inside the API.  
+`./src/libs`: Contains a thin wrapper to the database library.  
+
 ### Session
 - POST `/api/session/`
   - Body:
@@ -15,6 +24,7 @@
   - Responses:
     - 200: User informations (name + username)
     - 401: Wrong or missing credentials
+    - 422: Invalid Username format
 
 - GET `/api/session/current`
   - Responses:
@@ -36,7 +46,7 @@
     - code: Course code
   - Responses:
     - 200: incompatible and preparatory courses relative to the course with :code
-    - 400: Invalid code passed
+    - 422: Invalid code passed
     - 404: No course found with code :code
     - 500: Internal Error    
   
@@ -45,7 +55,7 @@
     - code: Course code
   - Responses:
     - 200: incompatible and preparatory courses relative to the course with :code
-    - 400: Invalid code passed
+    - 422: Invalid code passed
     - 404: No course found with code :code
     - 500: Internal Error
 
@@ -69,7 +79,7 @@
       - studentType: part-time or full-time specification for study plan to create.
   - Responses:
     - 200: The newly created (empty) study plan
-    - 400: Validation error on studentType
+    - 422: Validation error on studentType
     - 401: User not authenticated
     - 500: Internal Error
 
@@ -78,7 +88,7 @@
       - courses: list of courses to save as studyplan
   - Responses:
     - 200: Ok, studyplan saved.
-    - 400: Missing courses object in body
+    - 422: Missing courses object in body
     - 401: User not authenticated
     - 500: Internal Error
 
