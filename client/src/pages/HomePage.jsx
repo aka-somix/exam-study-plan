@@ -24,7 +24,7 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
   const [coursesToDisplay, setCoursesToDisplay] = useState([]);
 
   // Local Variable Studyplan
-  const [localStudentType, setLocalStudentType] = useState(studentType);
+  const [localStudentType, setLocalStudentType] = useState();
   
   // Local Variable Studyplan
   const [localStudyPlan, setLocalStudyPlan] = useState([]);
@@ -66,6 +66,7 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
     setActionLoading(true);
     try{
       await deleteStudyPlan();
+      setLocalStudentType(null);
     }
     finally {
       setActionLoading(false);
@@ -98,6 +99,11 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
   useEffect(()=>{
     setLocalStudyPlan(studyPlanCourses);
   }, [editMode, studyPlanCourses]);
+
+  // Update local student type
+  useEffect(()=>{
+    setLocalStudentType(studentType);
+  }, [studentType]);
 
   // Get all displayable courses
   useEffect(() => {

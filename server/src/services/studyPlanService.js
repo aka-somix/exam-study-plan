@@ -1,6 +1,7 @@
 'use-strict';
 
 const localDB = require('../libs/sqliteLocalDB');
+const { logger } = require('../middleware/logging');
 const courseService = require('./courseService');
 
 const MIN_CREDITS = { 'part-time': 20, 'full-time': 60 };
@@ -85,8 +86,13 @@ const createStudyPlanByUser = async (username, studentType) => {
 const deletePlanByUser = async (username) => {
   const database = await localDB.connect();
 
-  // Get actual courses
-  const oldCourses = (await getStudyPlanByUser(username)).courses;
+  let oldCourses = [];
+  try {
+    // Get actual courses
+    oldCourses = (await getStudyPlanByUser(username)).courses;
+  } catch (getError) {
+    logger.warn('Requested a delete for a non existing study plan');
+  }
 
   // Delete all study_plan entries
   const deleteQuery = `
@@ -247,6 +253,9 @@ const saveStudyPlanByUser = async (username, courses) => {
   const removeUpdatePromises = deletingCourses.map((course) => courseService.updateCourseStudents(course, 'sub'));
 
   await Promise.all([...addUpdatePromises, ...removeUpdatePromises]);
+
+  // Return the fresh saved study plan courses
+  return courses;
 };
 
 module.exports = {

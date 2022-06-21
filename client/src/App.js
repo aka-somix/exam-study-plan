@@ -66,9 +66,9 @@ function App() {
     setUser({});
   };
 
-  const createStudyPlan = async (studentType) => {
+  const createStudyPlan = async (studentType, courses) => {
     try {
-      const studyPlanCreated = await studyPlanService.createStudyPlan(studentType);
+      const studyPlanCreated = await studyPlanService.createStudyPlan(studentType, courses);
 
       setStudentType(studyPlanCreated.studentType);
       setStudyPlanCourses(studyPlanCreated.courses);

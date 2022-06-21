@@ -69,7 +69,7 @@ router.post('/', isLoggedIn, validatePostStudyPlan, async (req, res) => {
 
   // Save the studyPlan
   try {
-    createdStudyPlan.courses = await studentType.saveStudyPlanByUser(username, courses);
+    createdStudyPlan.courses = await studyPlanService.saveStudyPlanByUser(username, courses);
     res.status(201).json(createdStudyPlan);
   } catch (error) {
     logger.error(`Request-${req.id} Failed due to: ${error}`);
@@ -79,8 +79,9 @@ router.post('/', isLoggedIn, validatePostStudyPlan, async (req, res) => {
   // Rollback if there was an error during plan saving
   if (errorWhileSaving) {
     try {
-      logger.info('Trying to rollback the state');
+      logger.warn(`Request-${req.id}  Trying to rollback the state`);
       await studyPlanService.deletePlanByUser(username);
+      logger.info(`Request-${req.id}  Rollback successfull`);
 
       if (errorWhileSaving.message.includes('BadRequest')) {
         res.status(400).json(errorWhileSaving.message);
@@ -88,7 +89,7 @@ router.post('/', isLoggedIn, validatePostStudyPlan, async (req, res) => {
         res.status(500).json(errorWhileSaving.message);
       }
     } catch (delError) {
-      logger.info(`CRITICAL ERROR: Database state impaired for user ${username}`);
+      logger.error(`CRITICAL ERROR: Database state impaired for user ${username}`);
       res.status(500).json(delError.message);
     }
   }

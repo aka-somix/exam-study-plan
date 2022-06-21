@@ -20,7 +20,7 @@ async function getStudyPlan() {
   }
 }
 
-async function createStudyPlan(studentType) {
+async function createStudyPlan(studentType, courses) {
 
   // call: POST /api/study-plan/
   const response = await fetch(`${BASE_URL}/`, {
@@ -29,7 +29,7 @@ async function createStudyPlan(studentType) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ studentType }),
+    body: JSON.stringify({ studentType, courses }),
   });
 
   const studyPlanCreated = await response.json();
