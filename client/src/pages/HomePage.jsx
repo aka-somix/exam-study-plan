@@ -24,6 +24,9 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
   const [coursesToDisplay, setCoursesToDisplay] = useState([]);
 
   // Local Variable Studyplan
+  const [localStudentType, setLocalStudentType] = useState(studentType);
+  
+  // Local Variable Studyplan
   const [localStudyPlan, setLocalStudyPlan] = useState([]);
   
   // Current CFU amount in Study plan
@@ -34,24 +37,25 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
 
 
   // Wrapper create
-  const localCreateStudyPlan = async (studentType) => {
+  const localCreateStudyPlan = (type) => {
     setShowCreateModal(false);
-    setActionLoading(true);
-    try{
-      await createStudyPlan(studentType);
-    }
-    finally {
-      setActionLoading(false);
-    }
+    setEditMode(true);
+    setLocalStudentType(type);
   }
 
   // Wrapper save
   const localSaveStudyPlan = async (courses) => {
     setActionLoading(true);
     try{
-      await saveStudyPlan(courses);
+      if (!studentType){
+        await createStudyPlan(localStudentType, courses);
+      }
+      else {
+        await saveStudyPlan(courses);
+      }
     }
     finally {
+      setLocalStudentType(studentType);
       setActionLoading(false);
       setEditMode(false);
     }
@@ -67,6 +71,12 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
       setActionLoading(false);
       setEditMode(false);
     }
+  }
+
+  // Wrapper Cancel
+  const localCancelEdit = () => {
+    setEditMode(false);
+    setLocalStudentType(studentType);
   }
 
   // LOCALLY add a new course to study plan
@@ -124,7 +134,7 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
         *   -- CREATE STUDY PLAN BUTTON
         */}
       {
-        isLogged && !studentType &&
+        isLogged && !localStudentType &&
         <Button 
           className='float-right'
           label='Create Study Plan'
@@ -137,12 +147,12 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
         *   -- STUDY PLAN
         */}
       {
-        isLogged && studentType &&
+        isLogged && localStudentType &&
         <>
         {/* HEADING */}
         <div className='flex justify-start items-center'>
         
-          <Title value={`${studentType.toUpperCase()} Study Plan`}/>
+          <Title value={`${localStudentType.toUpperCase()} Study Plan`}/>
           
           {/* StudyPlan EDIT Button */}
           {
@@ -174,26 +184,26 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
             <Button 
               className="my-auto mx-8" 
               label='Cancel' 
-              onClick={() => {setEditMode(false)}}
+              onClick={() => localCancelEdit()}
               disabled={actionLoading}
             />
             
             <Button 
               className="my-auto mx-8" 
               label='Save' 
-              disabled={currentCFU > MAX_CREDITS[studentType] || currentCFU < MIN_CREDITS[studentType] || actionLoading} 
+              disabled={currentCFU > MAX_CREDITS[localStudentType] || currentCFU < MIN_CREDITS[localStudentType] || actionLoading} 
               onClick={() => localSaveStudyPlan(localStudyPlan)}
             />
             
             <div className='m-8 flex flex-col justify-evenly items-end'>
               <h3 className="font-2xl text-accent-200">
-                Minimum CFU: <u>{MIN_CREDITS[studentType]}</u>
+                Minimum CFU: <u>{MIN_CREDITS[localStudentType]}</u>
               </h3>
               <h3  className="font-2xl font-semibold text-primary-200">
                 Current CFU: <b><u>{currentCFU}</u></b>
               </h3>
               <h3 className="font-2xl text-accent-200">
-                Maximum CFU: <u>{MAX_CREDITS[studentType]}</u> 
+                Maximum CFU: <u>{MAX_CREDITS[localStudentType]}</u> 
               </h3> 
             </div>
           </div>
