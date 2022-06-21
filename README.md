@@ -4,7 +4,7 @@
 ## React Client Application Routes
 
 - Route `/`: Home Page with all the courses and the study plan. When the user is not logged in, shows the courses only with their description. When a user logged enters the page they will see a richer interface with their study plan and the buttons to create / delete / update it
-- Route `/login/`: Login Page with its form. Simply allows the user to login to unlock studyplan functionalities..
+- Route `/login/`: Login Page with its form. Simply allows the user to login to unlock study plan functionalities..
 
 ## API Server
 
@@ -77,24 +77,25 @@ The API has been structured differently, so it will be briefly described here.
 - POST `/api/study-plan/`
   - Body:
       - studentType: part-time or full-time specification for study plan to create.
+      - courses: list of courses to save to the study plan
   - Responses:
-    - 200: The newly created (empty) study plan
+    - 200: The newly created study plan
     - 422: Validation error on studentType
     - 401: User not authenticated
     - 500: Internal Error
 
 - PUT `/api/study-plan/`
   - Body:
-      - courses: list of courses to save as studyplan
+      - courses: the updated courses in the study plan
   - Responses:
-    - 200: Ok, studyplan saved.
+    - 200: Ok, study plan saved.
     - 422: Missing courses object in body
     - 401: User not authenticated
     - 500: Internal Error
 
 - DELETE `/api/study-plan/`
   - Responses:
-    - 200: Studyplan correctly destroyed if any.
+    - 200: Study plan correctly destroyed if any.
     - 401: User not authenticated
     - 500: Internal Error
 
