@@ -47,14 +47,16 @@ router.post('/', isLoggedIn, validatePostStudyPlan, async (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 
+  const { username } = req.user;
+  const { studentType, courses } = req.body;
+
+  let createdStudyPlan;
+  let errorWhileSaving;
+
+  // Create the Study Plan Entry
   try {
-    const { username } = req.user;
-
-    const { studentType } = req.body;
-
-    // Ask Service to Create StudyPlan
-    const studyPlanFromDB = await studyPlanService.createStudyPlanByUser(username, studentType);
-    res.status(201).json(studyPlanFromDB);
+    // Ask Service to Create the StudyPlan object
+    createdStudyPlan = await studyPlanService.createStudyPlanByUser(username, studentType);
   } catch (error) {
     logger.error(`Request-${req.id} Failed due to: ${error}`);
 
@@ -62,6 +64,32 @@ router.post('/', isLoggedIn, validatePostStudyPlan, async (req, res) => {
       res.status(400).json(error.message);
     } else {
       res.status(500).json(error.message);
+    }
+  }
+
+  // Save the studyPlan
+  try {
+    createdStudyPlan.courses = await studentType.saveStudyPlanByUser(username, courses);
+    res.status(201).json(createdStudyPlan);
+  } catch (error) {
+    logger.error(`Request-${req.id} Failed due to: ${error}`);
+    errorWhileSaving = error;
+  }
+
+  // Rollback if there was an error during plan saving
+  if (errorWhileSaving) {
+    try {
+      logger.info('Trying to rollback the state');
+      await studyPlanService.deletePlanByUser(username);
+
+      if (errorWhileSaving.message.includes('BadRequest')) {
+        res.status(400).json(errorWhileSaving.message);
+      } else {
+        res.status(500).json(errorWhileSaving.message);
+      }
+    } catch (delError) {
+      logger.info(`CRITICAL ERROR: Database state impaired for user ${username}`);
+      res.status(500).json(delError.message);
     }
   }
 });
