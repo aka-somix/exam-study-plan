@@ -215,7 +215,6 @@ function HomePage({isLogged, courses, loading, studyPlanCourses, studentType, cr
           </div>
         }
         </>
-
       }
 
       {/* 

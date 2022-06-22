@@ -51,6 +51,7 @@ function App() {
         setIsLogged(true);
         setUser(user);
         setLoginLoading(false);
+        setDirty(true);
       })
       .catch(err => {
         console.error({ err });
@@ -69,9 +70,8 @@ function App() {
   const createStudyPlan = async (studentType, courses) => {
     try {
       const studyPlanCreated = await studyPlanService.createStudyPlan(studentType, courses);
-
       setStudentType(studyPlanCreated.studentType);
-      setStudyPlanCourses(studyPlanCreated.courses);
+      setDirty(true);
 
     } catch (error) {
       console.error(error);
@@ -131,7 +131,6 @@ function App() {
       try {
         const coursesFromDB = await courseService.getAllCourses();
         setLoading(false);
-        setDirty(false);
         setCourses(coursesFromDB);
       }
       catch (error) {
@@ -151,18 +150,20 @@ function App() {
         const studyPlan = await studyPlanService.getStudyPlan();
         setStudentType(studyPlan.studentType);
         setStudyPlanCourses(studyPlan.courses);
-        setLoading(false);
       }
       catch (error) {
-        setLoading(false);
         console.error(`Couldn't Retrieve Data from API due to: ${error} `);
 
         // Set studentType and courses to default
         setStudentType('');
         setStudyPlanCourses([]);
       }
+      finally {
+        setLoading(false);
+        setDirty(false);
+      }
     };
-    if (isLogged) {
+    if (isLogged && dirty) {
       fetchData();
     }
   }, [isLogged, user.name, dirty]);
