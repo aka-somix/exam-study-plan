@@ -6,6 +6,15 @@ const localDB = require('../libs/sqliteLocalDB');
  *  Handlers for courses methods
  */
 
+const assembleCourse = (course) => ({
+  code: course.code,
+  name: course.name,
+  credits: course.credits,
+  students: course.students,
+  maxStudents: course.max_students,
+  preparatoryCourseCode: course.preparatoryCourseCode,
+});
+
 /**
  * Retrieve all courses from database
  */
@@ -14,14 +23,7 @@ const getAllCourses = async () => {
   const rows = await database.all('SELECT * FROM courses ORDER BY name ASC;', []);
 
   // Assemble courses
-  const courses = rows.map((item) => ({
-    code: item.code,
-    name: item.name,
-    credits: item.credits,
-    students: item.students,
-    maxStudents: item.max_students,
-    preparatoryCourseCode: item.preparatoryCourseCode,
-  }));
+  const courses = rows.map((item) => (assembleCourse(item)));
 
   return courses;
 };
@@ -35,7 +37,18 @@ const getCourseByCode = async (code) => {
 
   if (rows.length === 0) throw Error(`NotFound: No Course found with code ${code} `);
   if (rows.length > 1) throw Error(`Internal Error: Multiple Courses found with code ${code}`);
-  return rows[0];
+  return assembleCourse(rows[0]);
+};
+
+/**
+ * Retrieve courses from a list of codes
+ */
+const getCoursesByCodeList = async (codeList) => {
+  const database = await localDB.connect();
+
+  const placeholders = codeList.map(() => '(?)');
+  const courses = await database.all(`SELECT * FROM courses WHERE code IN (${placeholders.join(', ')});`, [...codeList]);
+  return courses.map((course) => assembleCourse(course));
 };
 
 /**
@@ -117,6 +130,7 @@ const updateCourseStudents = async (course, mode) => {
 module.exports = {
   getAllCourses,
   getCourseByCode,
+  getCoursesByCodeList,
   getCourseDetails,
   getIncompatiblesByCourseList,
   updateCourseStudents,

@@ -140,12 +140,15 @@ const saveStudyPlanByUser = async (username, courses) => {
   // Retrieve existing studyplan
   const oldCourses = (await getStudyPlanByUser(username)).courses;
 
+  // Retrieve refreshed version of new courses
+  const newCourses = await courseService.getCoursesByCodeList(courses.map((c) => c.code));
+
   // Create codes lists
   const oldCoursesCodes = oldCourses.map((c) => c.code);
-  const newCoursesCodes = courses.map((c) => c.code);
+  const newCoursesCodes = newCourses.map((c) => c.code);
 
   // Separate NEW Courses and DELETED Courses
-  const addingCourses = courses.filter((c) => !oldCoursesCodes.includes(c.code));
+  const addingCourses = newCourses.filter((c) => !oldCoursesCodes.includes(c.code));
   const deletingCourses = oldCourses.filter((c) => !newCoursesCodes.includes(c.code));
 
   /*
@@ -153,7 +156,7 @@ const saveStudyPlanByUser = async (username, courses) => {
    */
 
   // ERROR 1 -> DELETED course has a preparatoryFor still in the studyplan
-  let preparatoryFails = courses.filter(
+  let preparatoryFails = newCourses.filter(
     // If a course marked for deletion is preparatory for any of
     // the new courses that we are trying to save -> FAIL!
     (course) => deletingCourses.map((c) => c.code).includes(course.preparatoryCourseCode),
@@ -167,7 +170,7 @@ const saveStudyPlanByUser = async (username, courses) => {
    * Validate NEW courses
    */
   // ERROR 1 -> if any NEW course has incompatibilities with any other in the study plan
-  const incompatibleFails = (await courseService.getIncompatiblesByCourseList(courses))
+  const incompatibleFails = (await courseService.getIncompatiblesByCourseList(newCourses))
     // If a course in studyplan is in the incompatible courses list -> FAIL!
     .filter((incompatibleCourseCode) => newCoursesCodes.includes(incompatibleCourseCode))
     .map((c) => c.name);
@@ -196,7 +199,7 @@ const saveStudyPlanByUser = async (username, courses) => {
     ).map((c) => c.name);
 
     if (maxStudentsFails.length > 0) {
-      throw new Error(`BadRequest: Cannot Add ${maxStudentsFails.join(', ')}. They need preparatory courses not enlisted`);
+      throw new Error(`BadRequest: Cannot Add ${maxStudentsFails.join(', ')}. They reached the max students limit`);
     }
 
     /*
@@ -255,7 +258,7 @@ const saveStudyPlanByUser = async (username, courses) => {
   await Promise.all([...addUpdatePromises, ...removeUpdatePromises]);
 
   // Return the fresh saved study plan courses
-  return courses;
+  return newCourses;
 };
 
 module.exports = {
